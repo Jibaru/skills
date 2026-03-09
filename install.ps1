@@ -19,7 +19,8 @@ function Write-Warning { Write-Host $args -ForegroundColor Yellow }
 
 Write-Info "═══════════════════════════════════════════════════════════"
 Write-Info "   Claude Code Skills Installer"
-Write-Info "═══════════════════════════════════════════════════════════`n"
+Write-Info "═══════════════════════════════════════════════════════════"
+Write-Host ""
 
 # Create Claude skills directory if it doesn't exist
 if (-not (Test-Path $CLAUDE_SKILLS_DIR)) {
@@ -38,7 +39,8 @@ if ($skills.Count -eq 0) {
     exit 1
 }
 
-Write-Info "Found $($skills.Count) skill(s):`n"
+Write-Info "Found $($skills.Count) skill(s):"
+Write-Host ""
 
 foreach ($skill in $skills) {
     $skillName = $skill.Name
@@ -54,7 +56,8 @@ foreach ($skill in $skills) {
             Remove-Item -Path $targetPath -Recurse -Force
         } else {
             Write-Warning "  Skill already exists. Use -Update flag to update."
-            Write-Info "  Location: $targetPath`n"
+            Write-Info "  Location: $targetPath"
+            Write-Host ""
             continue
         }
     } else {
@@ -64,18 +67,22 @@ foreach ($skill in $skills) {
     # Copy skill directory
     Copy-Item -Path $sourcePath -Destination $targetPath -Recurse -Force
 
-    Write-Success "  ✓ Successfully installed to: $targetPath`n"
+    Write-Success "  ✓ Successfully installed to: $targetPath"
+    Write-Host ""
 }
 
 Write-Info "═══════════════════════════════════════════════════════════"
 Write-Success "Installation complete!"
-Write-Info "═══════════════════════════════════════════════════════════`n"
+Write-Info "═══════════════════════════════════════════════════════════"
+Write-Host ""
 
-Write-Info "Installed skills location: $CLAUDE_SKILLS_DIR`n"
+Write-Info "Installed skills location: $CLAUDE_SKILLS_DIR"
+Write-Host ""
 
 Write-Info "Usage:"
 Write-Info "  • Install new skills:    .\install.ps1"
 Write-Info "  • Update existing:       .\install.ps1 -Update"
-Write-Info "  • List installed:        ls $CLAUDE_SKILLS_DIR`n"
+Write-Info "  • List installed:        ls $CLAUDE_SKILLS_DIR"
+Write-Host ""
 
 Write-Success "Your skills are now available in Claude Code! 🚀"
