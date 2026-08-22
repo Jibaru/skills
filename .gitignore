@@ -1,0 +1,4 @@
+# Third-party skills installed via `npx skills add` (not part of this repo)
+.agents/
+.claude/
+skills-lock.json
