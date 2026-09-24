@@ -1,0 +1,22 @@
+{
+  "name": "vlog-transitions-renderer",
+  "private": true,
+  "description": "Shared Remotion runtime for vlog-transitions. Transitions are staged into public/current by the skill's stage.mjs script.",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render Transition",
+    "preview": "remotion render Transition --scale=0.3333 --crf=28",
+    "render-alpha": "remotion render Transition --image-format=png --pixel-format=yuva444p10le --codec=prores --prores-profile=4444"
+  },
+  "dependencies": {
+    "@imgly/background-removal-node": "^1.4.5",
+    "@remotion/cli": "^4.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "typescript": "^5.5.0"
+  }
+}

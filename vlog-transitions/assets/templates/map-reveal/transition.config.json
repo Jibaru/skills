@@ -1,0 +1,26 @@
+{
+  "template": "map-reveal",
+  "name": "unnamed",
+  "size": { "width": 3840, "height": 2160 },
+  "fps": 60,
+  "durationSeconds": 2.0,
+  "style": {
+    "paper": "#f3ead7",
+    "ink": "#4a3b2a",
+    "route": "#c73e3e",
+    "fontFamily": "'Patrick Hand', cursive"
+  },
+  "camera": { "pushIn": 1.06, "finalZoom": 2.6 },
+  "wiggle": { "degrees": 6, "cycles": 3 },
+  "locations": [
+    {
+      "id": "place",
+      "label": "Somewhere",
+      "x": 32,
+      "y": 58,
+      "stickers": [
+        { "src": "assets/face.sticker.png", "width": 300, "scale": 1, "rotate": -4 }
+      ]
+    }
+  ]
+}

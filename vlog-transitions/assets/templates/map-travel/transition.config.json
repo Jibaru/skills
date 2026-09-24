@@ -1,0 +1,35 @@
+{
+  "template": "map-travel",
+  "name": "unnamed",
+  "size": { "width": 3840, "height": 2160 },
+  "fps": 60,
+  "durationSeconds": 3.5,
+  "style": {
+    "paper": "#f3ead7",
+    "ink": "#4a3b2a",
+    "route": "#c73e3e",
+    "fontFamily": "'Patrick Hand', cursive"
+  },
+  "camera": { "pushIn": 1.08, "followZoom": 1.45, "finalZoom": 2.6 },
+  "wiggle": { "degrees": 6, "cycles": 3 },
+  "travel": { "bobs": 5, "bobPx": 9 },
+  "route": { "from": "origin", "to": "destination", "curvature": 0.18, "width": 10, "dash": [30, 22] },
+  "locations": [
+    {
+      "id": "origin",
+      "label": "Origin",
+      "x": 24,
+      "y": 62,
+      "stickers": [
+        { "src": "assets/face.sticker.png", "width": 300, "scale": 1, "rotate": -4 }
+      ]
+    },
+    {
+      "id": "destination",
+      "label": "Destination",
+      "x": 74,
+      "y": 40,
+      "stickers": []
+    }
+  ]
+}

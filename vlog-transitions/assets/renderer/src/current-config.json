@@ -1,0 +1,7 @@
+{
+  "template": "none",
+  "name": "none",
+  "size": { "width": 3840, "height": 2160 },
+  "fps": 60,
+  "durationSeconds": 2.0
+}

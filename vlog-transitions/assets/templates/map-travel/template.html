@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>map-travel</title>
+<style>
+  /* Templates are authored in a fixed 1920x1080 coordinate system ("stage units").
+     motion.js scales #stage to whatever viewport renders it (720p preview, 4K final). */
+  @font-face {
+    font-family: 'Patrick Hand';
+    src: url('assets/fonts/PatrickHand-Regular.ttf') format('truetype');
+  }
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+  #stage {
+    position: absolute; top: 0; left: 0;
+    width: 1920px; height: 1080px;
+    background:
+      radial-gradient(120% 120% at 50% 40%, rgba(0,0,0,0) 40%, rgba(0,0,0,.55) 100%),
+      linear-gradient(160deg, #3b3128 0%, #2a221b 60%, #1e1813 100%);
+    overflow: hidden;
+  }
+  #camera { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+
+  /* --- Folded paper (unfold machinery) --- */
+  #paper-scene {
+    position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;
+    perspective: 2600px; perspective-origin: 50% 50%;
+  }
+  #paper { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; transform-style: preserve-3d; }
+  .unit { position: absolute; transform-style: preserve-3d; }
+  #left-unit  { left: 0;     top: 0; width: 960px; height: 1080px; }
+  #right-unit { left: 960px; top: 0; width: 960px; height: 1080px; transform-origin: 0 50%; }
+  .quarter { position: absolute; left: 0; width: 960px; height: 540px; transform-style: preserve-3d; }
+  .quarter.top    { top: 0; }
+  .quarter.bottom { top: 540px; transform-origin: 50% 0; }
+  .face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    overflow: hidden;
+  }
+  .face.back {
+    transform: rotateX(180deg); /* bottom-flap backs; right-unit statics override inline */
+    background:
+      radial-gradient(140% 140% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.18) 100%),
+      #e6dcc3;
+  }
+  .face.back.yflip { transform: rotateY(180deg); }
+  .face svg { display: block; width: 960px; height: 540px; }
+  /* Fold shading: animation.js drives opacity from the fold angle. */
+  .shade { position: absolute; inset: 0; background: #201a12; opacity: 0; pointer-events: none; }
+  .back-grain {
+    position: absolute; inset: 0; opacity: .5;
+    background-image: repeating-linear-gradient(115deg, rgba(120,100,70,.06) 0 3px, rgba(0,0,0,0) 3px 7px);
+  }
+
+  /* --- Flat map (post-unfold) --- */
+  #flat { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; display: none; }
+  #flat > svg { display: block; width: 1920px; height: 1080px; }
+  #sticker-layer { position: absolute; inset: 0; }
+  .sticker {
+    position: absolute;
+    transform-origin: 50% 60%;
+    filter: drop-shadow(0 10px 14px rgba(30, 20, 5, 0.35));
+    will-change: transform;
+  }
+  .marker-g, .label-g { transform-box: fill-box; transform-origin: center; }
+
+  #flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <div id="camera">
+    <div id="paper-scene">
+      <div id="paper">
+        <div class="unit" id="left-unit">
+          <div class="quarter top" id="q-tl">
+            <div class="face front"><svg id="crop-tl"><use href="#map-def"></use></svg><div class="shade" id="shade-tl"></div></div>
+          </div>
+          <div class="quarter bottom" id="q-bl">
+            <div class="face front"><svg id="crop-bl"><use href="#map-def"></use></svg><div class="shade" id="shade-bl"></div></div>
+            <div class="face back"><div class="back-grain"></div><div class="shade" id="bshade-bl"></div></div>
+          </div>
+        </div>
+        <div class="unit" id="right-unit">
+          <div class="quarter top" id="q-tr">
+            <div class="face front"><svg id="crop-tr"><use href="#map-def"></use></svg><div class="shade" id="shade-tr"></div></div>
+            <div class="face back yflip"><div class="back-grain"></div><div class="shade" id="bshade-tr"></div></div>
+          </div>
+          <div class="quarter bottom" id="q-br">
+            <div class="face front"><svg id="crop-br"><use href="#map-def"></use></svg><div class="shade" id="shade-br"></div></div>
+            <div class="face back"><div class="back-grain"></div><div class="shade" id="bshade-br"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="flat">
+      <svg viewBox="0 0 1920 1080">
+        <use href="#map-def"></use>
+        <g id="route-layer"></g>
+        <g id="marker-layer"></g>
+      </svg>
+      <div id="sticker-layer"></div>
+    </div>
+  </div>
+
+  <div id="flash"></div>
+</div>
+
+<!-- ======================================================================
+     Map artwork. Everything inside <g id="map-art"> is per-project artwork:
+     replace it with hand-drawn, stylized geography for the actual places
+     (see references/authoring-map-art.md). Coordinates are 0..1920 x 0..1080.
+     The paper base, grain, stains, creases and vignette are the shared look
+     of the family — keep them unless the style pack changes.
+     ====================================================================== -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="grain-f" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.9 0.9 0.9 0 0"/>
+    </filter>
+    <filter id="blotch-f" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="11"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.45  0 0 0 0 0.35  0 0 0 0 0.2  0.9 0 0 0 -0.35"/>
+    </filter>
+    <radialGradient id="vignette-g" cx="50%" cy="45%" r="75%">
+      <stop offset="60%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.16"/>
+    </radialGradient>
+    <linearGradient id="crease-v" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#000" stop-opacity=".18"/>
+      <stop offset=".55" stop-color="#fff" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="crease-h" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#000" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#000" stop-opacity=".18"/>
+      <stop offset=".55" stop-color="#fff" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </linearGradient>
+
+    <g id="map-def">
+      <rect width="1920" height="1080" fill="#f3ead7"/>
+
+      <g id="map-art">
+        <!-- PLACEHOLDER GEOGRAPHY — replace with the project's stylized map. -->
+        <path d="M -20 380 C 260 320 420 430 620 400 C 850 365 980 480 1230 450 C 1500 415 1700 500 1950 460 L 1950 -20 L -20 -20 Z"
+              fill="#dde6da" stroke="#8fa08e" stroke-width="5" stroke-linecap="round"/>
+        <path d="M -20 380 C 260 320 420 430 620 400 C 850 365 980 480 1230 450 C 1500 415 1700 500 1950 460"
+              fill="none" stroke="#6d8a86" stroke-width="3" stroke-dasharray="1 14" stroke-linecap="round" transform="translate(0 26)"/>
+        <g stroke="#7a6a50" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M 380 700 l 45 -60 l 45 60 M 405 700 l 20 -26 l 20 26"/>
+          <path d="M 500 760 l 50 -68 l 50 68 M 528 760 l 22 -30 l 22 30"/>
+          <path d="M 1350 640 l 42 -56 l 42 56"/>
+          <path d="M 1450 700 l 48 -64 l 48 64 M 1476 700 l 22 -28 l 22 28"/>
+        </g>
+        <path d="M 200 1100 C 350 950 560 980 700 860 C 830 750 1050 780 1200 700"
+              fill="none" stroke="#9fb4c8" stroke-width="9" stroke-linecap="round" opacity=".85"/>
+        <g transform="translate(1760 900)" stroke="#7a6a50" fill="none" stroke-width="4">
+          <circle r="52"/><circle r="6" fill="#7a6a50" stroke="none"/>
+          <path d="M 0 -52 L 12 -12 L 0 0 L -12 -12 Z" fill="#b0512f" stroke="none"/>
+          <path d="M 0 52 L 12 12 L 0 0 L -12 12 Z" fill="#7a6a50" stroke="none"/>
+          <text y="-64" text-anchor="middle" font-family="'Patrick Hand', cursive" font-size="34" fill="#5b4c38" stroke="none">N</text>
+        </g>
+      </g>
+
+      <rect width="1920" height="1080" filter="url(#blotch-f)" opacity="0.5"/>
+      <rect width="1920" height="1080" filter="url(#grain-f)" opacity="0.10"/>
+      <rect x="945" width="30" height="1080" fill="url(#crease-v)" opacity=".8"/>
+      <rect y="525" width="1920" height="30" fill="url(#crease-h)" opacity=".8"/>
+      <rect width="1920" height="1080" fill="url(#vignette-g)"/>
+    </g>
+  </defs>
+</svg>
+
+<script src="transition.config.js"></script>
+<script src="motion.js"></script>
+<script src="animation.js"></script>
+</body>
+</html>
