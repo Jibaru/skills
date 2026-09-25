@@ -1,0 +1,1300 @@
+{
+ "source": "https://kenney.nl/assets",
+ "license": "CC0 1.0",
+ "scraped": "2026-09-25",
+ "packs": [
+  {
+   "slug": "1-bit-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "1-bit-platformer-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "3d-road-tiles",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "abstract-platformer",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "alien-ufo-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "animal-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "animal-pack-remastered",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "animated-characters-protagonists",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "animated-characters-retro",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "animated-characters-survivors",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "background-elements",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "background-elements-remastered",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "blaster-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "block-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "blocky-characters",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "board-game-icons",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "board-game-info",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "boardgame-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "brick-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "brick-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "building-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "car-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "cartography-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "casino-audio",
+   "categories": [
+    "audio"
+   ]
+  },
+  {
+   "slug": "castle-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "city-kit-commercial",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "city-kit-industrial",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "city-kit-roads",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "city-kit-suburban",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "coaster-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "crosshair-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "cube-pets",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "cursor-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "cursor-pixel-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "desert-shooter-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "development-essentials",
+   "categories": [
+    "textures"
+   ]
+  },
+  {
+   "slug": "digital-audio",
+   "categories": [
+    "audio"
+   ]
+  },
+  {
+   "slug": "domino-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "emotes-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "factory-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "fantasy-town-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "fantasy-ui-borders",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "fish-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "flag-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "foliage-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "foliage-sprites",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "food-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "furniture-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "game-icons",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "game-icons-expansion",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "generic-items",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "googly-eyes",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "graveyard-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "hexagon-buildings",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "hexagon-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "hexagon-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "hexagon-tiles",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "holiday-extras",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "holiday-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "impact-sounds",
+   "categories": [
+    "audio"
+   ]
+  },
+  {
+   "slug": "input-prompts",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "input-prompts-pixel",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "input-prompts-pixel-1-bit",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "interface-sounds",
+   "categories": [
+    "audio"
+   ]
+  },
+  {
+   "slug": "isometric-blocks",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "isometric-miniature-bases",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "isometric-miniature-dungeon",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "isometric-miniature-farm",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "isometric-miniature-library",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "isometric-miniature-prototype",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "isometric-roads",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "isometric-roads-water",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "isometric-tiles-buildings",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "isometric-tiles-city",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "isometric-tiles-landscape",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "isometric-tiles-vehicles",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "jumper-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "kenney-fonts",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "letter-tiles",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "light-masks",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "map-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "marble-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "medals",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "medieval-rts",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "micro-roguelike",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "mini-arcade",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "mini-arena",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "mini-characters",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "mini-dungeon",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "mini-forest",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "mini-market",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "mini-skate",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "minigolf-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "minimap-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "mobile-controls",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "modular-buildings",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "modular-cave-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "modular-characters",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "modular-dungeon-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "modular-space-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "monochrome-pirates",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "monochrome-rpg",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "monster-builder-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "music-jingles",
+   "categories": [
+    "audio"
+   ]
+  },
+  {
+   "slug": "nature-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "new-platformer-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "particle-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "pattern-pack",
+   "categories": [
+    "textures"
+   ]
+  },
+  {
+   "slug": "pattern-pack-extra",
+   "categories": [
+    "textures"
+   ]
+  },
+  {
+   "slug": "pattern-pack-lines",
+   "categories": [
+    "textures"
+   ]
+  },
+  {
+   "slug": "pattern-pack-pixel",
+   "categories": [
+    "textures"
+   ]
+  },
+  {
+   "slug": "physics-assets",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "pico-8-city",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "pico-8-platformer",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "pirate-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "pirate-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "pixel-line-platformer",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "pixel-platformer",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "pixel-platformer-blocks",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "pixel-platformer-farm-expansion",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "pixel-platformer-food-expansion",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "pixel-platformer-industrial-expansion",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "pixel-shmup",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "pixel-ui-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "pixel-vehicle-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "planets",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "platformer-art-buildings",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "platformer-art-candy",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "platformer-art-deluxe",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "platformer-art-extended-enemies",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "platformer-art-extended-tileset",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "platformer-art-mushrooms",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "platformer-art-pixel",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "platformer-art-requests",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "platformer-art-winter",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "platformer-bricks",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "platformer-characters",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "platformer-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "platformer-pack-industrial",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "platformer-pack-medieval",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "platformer-pack-remastered",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "playing-cards-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "prototype-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "prototype-textures",
+   "categories": [
+    "textures"
+   ]
+  },
+  {
+   "slug": "puzzle-pack-1",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "puzzle-pack-2",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "racing-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "racing-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "ranks-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "retro-fantasy-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "retro-textures-fantasy",
+   "categories": [
+    "textures"
+   ]
+  },
+  {
+   "slug": "retro-urban-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "road-textures",
+   "categories": [
+    "textures"
+   ]
+  },
+  {
+   "slug": "robot-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "roguelike-caves-dungeons",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "roguelike-characters",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "roguelike-indoors",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "roguelike-modern-city",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "roguelike-rpg-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "rolling-ball-assets",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "rpg-audio",
+   "categories": [
+    "audio"
+   ]
+  },
+  {
+   "slug": "rpg-base",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "rpg-urban-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "rune-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "sci-fi-rts",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "sci-fi-sounds",
+   "categories": [
+    "audio"
+   ]
+  },
+  {
+   "slug": "scribble-dungeons",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "scribble-platformer",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "scribble-platformer-expansion",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "series",
+   "categories": [
+    "2d",
+    "3d",
+    "audio",
+    "textures"
+   ]
+  },
+  {
+   "slug": "shape-characters",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "shooting-gallery",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "simple-space",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "simplified-platformer-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "sketch-desert",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "sketch-town",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "sketch-town-expansion",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "skyboxes",
+   "categories": [
+    "textures"
+   ]
+  },
+  {
+   "slug": "smoke-particles",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "sokoban",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "space-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "space-shooter-extension",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "space-shooter-remastered",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "space-station-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "splat-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "sports-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "survival-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "tanks",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "tappy-plane",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "tiny-battle",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "tiny-dungeon",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "tiny-factory",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "tiny-farm",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "tiny-ski",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "tiny-town",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "toon-characters",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "top-down-shooter",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "top-down-tanks",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "top-down-tanks-remastered",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "tower-defense",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "tower-defense-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "tower-defense-top-down",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "toy-car-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "train-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "ui-audio",
+   "categories": [
+    "audio"
+   ]
+  },
+  {
+   "slug": "ui-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "ui-pack-adventure",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "ui-pack-pixel-adventure",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "ui-pack-rpg-expansion",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "ui-pack-sci-fi",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "voiceover-pack",
+   "categories": [
+    "audio"
+   ]
+  },
+  {
+   "slug": "voiceover-pack-fighter",
+   "categories": [
+    "audio"
+   ]
+  },
+  {
+   "slug": "voxel-pack",
+   "categories": [
+    "2d"
+   ]
+  },
+  {
+   "slug": "watercraft-kit",
+   "categories": [
+    "3d"
+   ]
+  },
+  {
+   "slug": "yellow-paint-pack",
+   "categories": [
+    "2d"
+   ]
+  }
+ ]
+}
