@@ -1,0 +1,7 @@
+%% Diseño pre-experimental con pre-prueba y post-prueba: GE: O1 X O2.
+%% Para solo post-prueba (G: X O2) elimina O1; para históricos, rotula O1 con el periodo.
+flowchart LR
+    GE["GE<br/>Grupo experimental"] --> O1["O1<br/>Pre-prueba<br/>(medición de la VD<br/>sin el sistema)"]
+    O1 --> X["X<br/>Tratamiento<br/>(implementación del<br/>sistema web)"]
+    X --> O2["O2<br/>Post-prueba<br/>(medición de la VD<br/>con el sistema)"]
+    O2 --> CMP{{"Comparación<br/>O1 frente a O2"}}

@@ -1,0 +1,41 @@
+% METODOLOGÍA (capítulo IV con hipótesis, III sin hipótesis). Lo escribe tesis-metodologia.
+% Las secciones cambian entre plan y tesis; \ifmodoplan elige cuál se imprime.
+
+\section{Diseño de investigación}
+% \subsection{Tipo}, \subsection{Nivel}, \subsection{Diseño} (esquema GE: O1 X O2),
+% \subsection{Enfoque}, \subsection{Método}; cada uno definido con cita y aplicado.
+
+\section{Descripción de la metodología}
+% Cómo se ejecuta el diseño: grupo, cuándo se miden O1 y O2, indicadores e instrumentos.
+% Separa el desarrollo del software de la comprobación de hipótesis.
+\ifmodoplan
+\subsection{Etapas del desarrollo del plan de tesis}
+% Etapas de la investigación y del desarrollo del sistema (p. ej. Scrum: sprint 0 ... n).
+\else
+\subsection{Implementación del tema de investigación}
+% Desarrollo del sistema por sprints: requerimientos, arquitectura, modelo de datos,
+% integraciones (WhatsApp, OpenAI), capturas y fragmentos de código en lstlisting.
+\subsection{Pruebas realizadas}
+% Pruebas funcionales y cómo se tomaron las mediciones pre y post de cada indicador.
+\fi
+
+\ifconhipotesis
+\section{Población y muestra}
+% \subsection{Población} y \subsection{Muestra}: unidad de análisis, criterios de inclusión y
+% exclusión, tamaño (fórmula si es probabilístico) y tipo de muestreo.
+
+\ifmodoplan
+\section{Técnicas e instrumentos de recolección de datos}
+% Técnica -> instrumento por indicador, validez y confiabilidad previstas, plan de análisis.
+\else
+\section{Técnicas de recolección de datos}
+% Técnica usada por indicador, con cita.
+
+\section{Instrumentos de recolección de datos}
+% Instrumento por indicador (fichas en el Anexo 2).
+\subsection{Validez}
+% Juicio de expertos (3): claridad, pertinencia, relevancia. Resultado en el Anexo 3.
+\subsection{Confiabilidad}
+% Datos del sistema: trazabilidad de registros. Cuestionarios: Alfa de Cronbach > 0,7.
+\fi
+\fi

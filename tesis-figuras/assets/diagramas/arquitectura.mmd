@@ -1,0 +1,29 @@
+%% Arquitectura de la solución: WhatsApp <-> backend <-> OpenAI.
+%% Ajusta los componentes al stack real (lee el repositorio del sistema).
+flowchart LR
+    U(["Cliente<br/>(WhatsApp)"])
+    subgraph Meta["Meta Platforms"]
+        WA["WhatsApp Cloud API"]
+    end
+    subgraph Servidor["Servidor de la aplicación"]
+        WH["Webhook<br/>(recepción de mensajes)"]
+        Q[["Cola de mensajes"]]
+        BE["Backend / API REST"]
+    end
+    subgraph OpenAI["OpenAI"]
+        AI["API de OpenAI<br/>(modelo de lenguaje)"]
+    end
+    DB[("Base de datos<br/>conversaciones y clientes")]
+    PW["Panel web<br/>(operadores)"]
+    OP(["Operador"])
+
+    U -- "mensaje" --> WA
+    WA -- "evento HTTPS" --> WH
+    WH --> Q --> BE
+    BE -- "instrucciones + contexto" --> AI
+    AI -- "respuesta" --> BE
+    BE <--> DB
+    BE -- "envío de respuesta" --> WA
+    WA -- "respuesta" --> U
+    PW <--> BE
+    OP --> PW

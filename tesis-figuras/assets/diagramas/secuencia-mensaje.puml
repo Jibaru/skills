@@ -1,0 +1,31 @@
+' Diagrama de secuencia: atención de un mensaje entrante.
+@startuml secuencia-mensaje
+skinparam dpi 300
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam monochrome true
+skinparam shadowing false
+skinparam sequenceMessageAlign center
+hide footbox
+
+actor Cliente
+participant "WhatsApp\nCloud API" as WA
+participant "Webhook" as WH
+participant "Backend" as BE
+database "Base de\ndatos" as DB
+participant "API de\nOpenAI" as AI
+
+Cliente -> WA : Envía mensaje
+WA -> WH : POST /webhook (evento)
+WH -> WH : Valida firma
+WH -> BE : Encola mensaje
+activate BE
+BE -> DB : Recupera historial del cliente
+DB --> BE : Conversación previa
+BE -> AI : Solicitud (instrucciones + historial + mensaje)
+AI --> BE : Respuesta generada
+BE -> DB : Registra mensaje y respuesta
+BE -> WA : POST /messages (respuesta)
+deactivate BE
+WA -> Cliente : Entrega respuesta
+@enduml

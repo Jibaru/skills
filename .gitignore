@@ -2,3 +2,7 @@
 .agents/
 .claude/
 skills-lock.json
+
+# Local thesis source material (third-party documents, not part of this repo)
+pro-tesis/
+__pycache__/

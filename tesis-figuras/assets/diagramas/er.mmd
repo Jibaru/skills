@@ -1,0 +1,32 @@
+%% Modelo entidad-relación. Constrúyelo desde el esquema real (migraciones o schema.sql).
+erDiagram
+    CLIENTE ||--o{ CONVERSACION : inicia
+    CONVERSACION ||--|{ MENSAJE : contiene
+    OPERADOR ||--o{ CONVERSACION : atiende
+    CLIENTE {
+        int id PK
+        string telefono
+        string nombre
+        datetime creado_en
+    }
+    CONVERSACION {
+        int id PK
+        int cliente_id FK
+        int operador_id FK
+        string estado
+        datetime inicio
+        datetime fin
+    }
+    MENSAJE {
+        int id PK
+        int conversacion_id FK
+        string emisor "cliente, ia u operador"
+        text contenido
+        int tokens
+        datetime enviado_en
+    }
+    OPERADOR {
+        int id PK
+        string nombre
+        string correo
+    }

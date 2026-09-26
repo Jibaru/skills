@@ -1,0 +1,28 @@
+# PDFs de la literatura: tienen copyright, no se versionan (las fichas sí).
+literatura/pdfs/
+
+# Compilación LaTeX
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.lof
+*.lol
+*.lot
+*.toc
+*.out
+*.run.xml
+*.synctex.gz
+*.xdv
+main.pdf
+
+# Exportación a Word
+_docx/
+tesis.docx
+
+# Python
+__pycache__/
+.venv/

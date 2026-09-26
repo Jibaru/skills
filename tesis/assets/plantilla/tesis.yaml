@@ -1,0 +1,145 @@
+# EJEMPLO. Reemplaza todo con los datos reales de tu tesis.
+# Esquema completo y reglas: skill tesis, references/tesis-yaml.md.
+# Después de editar: scripts/compilar.sh (corre generar.py y compila).
+
+meta:
+  modo: plan                 # plan | tesis
+  con_hipotesis: true
+  titulo: "SISTEMA WEB CON CHATBOT DE WHATSAPP E INTELIGENCIA ARTIFICIAL PARA LA GESTIÓN DE ATENCIÓN AL CLIENTE EN UNA EMPRESA DE SERVICIOS"
+  autores:
+    - apellidos: "Apellido Apellido"
+      nombres: "Nombre Nombre"
+      orcid: "0000-0000-0000-0000"
+      dni: "00000000"
+  asesor:
+    grado: "Mg."
+    apellidos: "Apellido Apellido"
+    nombres: "Nombre"
+    orcid: "0000-0000-0000-0000"
+  universidad: "UNIVERSIDAD NACIONAL TECNOLÓGICA DE LIMA SUR"
+  facultad: "FACULTAD DE INGENIERÍA Y GESTIÓN"
+  escuela: "ESCUELA PROFESIONAL DE INGENIERÍA DE SISTEMAS"
+  carrera: "INGENIERÍA DE SISTEMAS"
+  titulo_profesional: "INGENIERO DE SISTEMAS"
+  ciudad: "Villa El Salvador"
+  anio: 2026
+  caratula: facultad         # facultad | reglamento
+  antecedentes_ventana_anios: 5
+  interlineado: 1.5          # 1.5 | 2
+  alineacion: justificado    # justificado | izquierda
+  palabras_clave: ["chatbot", "WhatsApp", "inteligencia artificial", "atención al cliente"]
+  keywords: ["chatbot", "WhatsApp", "artificial intelligence", "customer service"]
+
+delimitacion:
+  espacial: "EJEMPLO: la investigación se desarrollará en el área de atención al cliente de una empresa de servicios ubicada en Villa El Salvador, Lima."
+  temporal: "EJEMPLO: la investigación se desarrollará entre marzo y diciembre de 2026; la pre-prueba corresponde a abril y la post-prueba a octubre."
+
+problema:
+  general: "¿En qué medida un sistema web con chatbot de WhatsApp e inteligencia artificial mejora la gestión de atención al cliente en una empresa de servicios?"
+  especificos:
+    - "¿En qué medida un sistema web con chatbot de WhatsApp e inteligencia artificial reduce el tiempo promedio de primera respuesta al cliente?"
+    - "¿En qué medida un sistema web con chatbot de WhatsApp e inteligencia artificial incrementa la tasa de consultas resueltas sin intervención humana?"
+
+objetivos:
+  general: "Determinar en qué medida un sistema web con chatbot de WhatsApp e inteligencia artificial mejora la gestión de atención al cliente en una empresa de servicios."
+  especificos:
+    - "Determinar en qué medida un sistema web con chatbot de WhatsApp e inteligencia artificial reduce el tiempo promedio de primera respuesta al cliente."
+    - "Determinar en qué medida un sistema web con chatbot de WhatsApp e inteligencia artificial incrementa la tasa de consultas resueltas sin intervención humana."
+
+hipotesis:
+  general: "Un sistema web con chatbot de WhatsApp e inteligencia artificial mejora significativamente la gestión de atención al cliente en una empresa de servicios."
+  especificos:
+    - "Un sistema web con chatbot de WhatsApp e inteligencia artificial reduce significativamente el tiempo promedio de primera respuesta al cliente."
+    - "Un sistema web con chatbot de WhatsApp e inteligencia artificial incrementa significativamente la tasa de consultas resueltas sin intervención humana."
+
+variables:
+  independiente:
+    nombre: "Sistema web con chatbot de WhatsApp e inteligencia artificial"
+    tipo: "Cualitativa"
+    definicion_conceptual: "EJEMPLO: aplicación web que integra la API de WhatsApp con un modelo de lenguaje para responder consultas de clientes en lenguaje natural (Autor, año)."
+    definicion_operacional: "Se implementará en la organización y se aplicará como tratamiento al grupo experimental durante el periodo de post-prueba."
+    dimensiones: []
+  dependiente:
+    nombre: "Gestión de atención al cliente"
+    tipo: "Cuantitativa"
+    definicion_conceptual: "EJEMPLO: conjunto de actividades con las que una organización recibe, atiende y resuelve las consultas de sus clientes (Autor, año)."
+    definicion_operacional: "Se medirá mediante el tiempo de primera respuesta y la tasa de resolución, registrados en fichas de registro antes y después de implementar el sistema."
+    dimensiones:
+      - nombre: "Oportunidad de la atención"
+        definicion: "EJEMPLO: rapidez con la que la organización responde a la consulta del cliente (Autor, año)."
+        indicadores:
+          - nombre: "Tiempo promedio de primera respuesta"
+            simbolo: "TPR"
+            formula: "TPR = \\frac{\\sum_{i=1}^{n} t_i}{n}"
+            unidad: "minutos"
+            escala: "De razón"
+            instrumento: "Ficha de registro"
+            sentido: baja
+            especifico: 1
+      - nombre: "Eficacia de la atención"
+        definicion: "EJEMPLO: capacidad de resolver la consulta del cliente sin derivarla (Autor, año)."
+        indicadores:
+          - nombre: "Tasa de consultas resueltas sin intervención humana"
+            simbolo: "TRA"
+            formula: "TRA = \\frac{CR_{auto}}{CT} \\times 100"
+            unidad: "porcentaje"
+            escala: "De razón"
+            instrumento: "Ficha de registro"
+            sentido: sube
+            especifico: 2
+
+metodologia:
+  enfoque: "Cuantitativo"
+  tipo: "Aplicada"
+  nivel: "Explicativo"
+  diseno: "Pre-experimental con pre-prueba y post-prueba"
+  esquema: "GE: O1 X O2"
+  metodo: "Deductivo"
+  metodologia_desarrollo: "Scrum"
+  unidad_analisis: "Consulta de cliente recibida por WhatsApp"
+  poblacion: "EJEMPLO: consultas recibidas por WhatsApp en un mes típico (N = 1200)."
+  muestra: "EJEMPLO: 30 días de registro en pre-prueba y 30 días en post-prueba."
+  muestreo: "No probabilístico por conveniencia"
+  criterios_inclusion: ["Consultas recibidas en horario de atención"]
+  criterios_exclusion: ["Mensajes de spam o sin contenido"]
+  tecnicas: ["Observación"]
+  instrumentos: ["Ficha de registro"]
+  ruta_pre_prueba: historicos
+
+cronograma:
+  - actividad: "Revisión de literatura y marco teórico"
+    inicio: 1
+    fin: 4
+  - actividad: "Pre-prueba: registro de indicadores"
+    inicio: 5
+    fin: 8
+  - actividad: "Desarrollo del sistema (sprints)"
+    inicio: 5
+    fin: 14
+  - actividad: "Post-prueba: registro de indicadores"
+    inicio: 15
+    fin: 18
+  - actividad: "Análisis estadístico y redacción de la tesis"
+    inicio: 18
+    fin: 22
+
+presupuesto:
+  moneda: "S/"
+  imprevistos_pct: 10
+  items:
+    - rubro: "Servicios"
+      descripcion: "EJEMPLO: API de OpenAI (consumo estimado por 6 meses)"
+      cantidad: 6
+      costo_unitario: 60.00
+    - rubro: "Servicios"
+      descripcion: "EJEMPLO: servidor en la nube (VPS)"
+      cantidad: 6
+      costo_unitario: 40.00
+    - rubro: "Bienes"
+      descripcion: "EJEMPLO: materiales de impresión y empastado"
+      cantidad: 1
+      costo_unitario: 250.00
+    - rubro: "Otros"
+      descripcion: "EJEMPLO: movilidad"
+      cantidad: 10
+      costo_unitario: 10.00

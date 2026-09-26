@@ -1,0 +1,30 @@
+% Figura propia (diagrama o gráfico generado por figura.py).
+% \includegraphics sin extensión: toma el .pdf si existe; si no, el .png.
+\begin{figure}[htbp]
+\caption{Arquitectura de la solución propuesta}
+\label{fig:arquitectura}
+\centering
+\includegraphics[width=\linewidth]{figuras/out/arquitectura}
+\nota{Elaboración propia.}
+\end{figure}
+
+% Figura tomada de otra fuente: la cita es obligatoria. Si la modificaste: "Adaptado de".
+\begin{figure}[htbp]
+\caption{Estructura de una red neuronal de propagación hacia atrás}
+\label{fig:bp}
+\centering
+\includegraphics[width=0.8\linewidth]{figuras/out/estructura-bp}
+\nota{Tomado de \textcite{li2016}.}
+\end{figure}
+
+% Captura del sistema (sección de implementación). \fbox da un borde fino.
+\begin{figure}[htbp]
+\caption{Panel web de atención de conversaciones}
+\label{fig:panel}
+\centering
+\fbox{\includegraphics[width=0.95\linewidth]{figuras/out/panel-conversaciones}}
+\nota{Captura del sistema implementado. Elaboración propia.}
+\end{figure}
+
+% En el texto, siempre antes de la figura:
+%   "... como se observa en la Figura~\ref{fig:arquitectura}, ..."

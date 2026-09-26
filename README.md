@@ -77,3 +77,49 @@ Everything works without them. Set these only when you want more sources:
 | ElevenLabs (SFX, music, voice) | `claude mcp add --transport http elevenlabs https://api.elevenlabs.io/v1/mcp` |
 
 Start with: *"I want to make a game"*.
+
+## Thesis kit (UNTELS · LaTeX · APA 7)
+
+Skills to write a bachelor's thesis plan (*plan de tesis*) and thesis for Systems
+Engineering at UNTELS (Peru) in LaTeX, following the official format, the jury
+rubric and APA 7 in Spanish. Each phase interviews you first (grill-me rounds),
+drafts, and self-reviews against the rubric before showing anything.
+
+| Skill | What it does |
+| --- | --- |
+| `tesis` | Orchestrator: creates the thesis project, tracks `ESTADO.md`, picks the next phase, checks vertical coherence. Holds the shared references (format, structure, course rules, APA, jury rubric, writing voice) and the LaTeX template |
+| `tesis-literatura` | Search strings, OpenAlex / Semantic Scholar / Crossref / arXiv / Peruvian thesis repositories, open-access download, parallel per-paper analysis, review matrix |
+| `tesis-referencias` | Verified `referencias.bib` from DOI/ISBN, citation ↔ reference check |
+| `tesis-problema` | Chapter I: problem description, questions, objectives, scope, justification, title |
+| `tesis-marco` | Chapter II: prior studies, theoretical bases, key terms |
+| `tesis-variables` | Chapter III: operationalization, hypotheses, consistency matrix |
+| `tesis-metodologia` | Chapter IV: research design, population and sample, instruments, expert validation, schedule, budget |
+| `tesis-resultados` | Statistics (normality, paired t / Wilcoxon), results, discussion, conclusions |
+| `tesis-figuras` | Mermaid / PlantUML / matplotlib figures and Playwright screenshots |
+| `tesis-jurado` | Jury-style review with the official rubric and an originality check against the downloaded PDFs |
+
+The thesis itself lives in its own (private) repository; the kit creates it with
+`tesis/scripts/nuevo-proyecto.sh <dir>`. `tesis.yaml` is the single source of
+truth for problems, objectives, hypotheses, variables and indicators, and the
+consistency and operationalization tables are generated from it.
+
+Install:
+
+```powershell
+.\install-tesis.ps1            # skills + grill-me + Python deps + Docker images
+.\install-tesis.ps1 -NoDocker
+```
+
+```bash
+./install-tesis.sh
+./install-tesis.sh --no-docker --dry-run
+```
+
+Requires Python 3.10+, Node.js 18+ (grill-me, figures) and Docker (LaTeX build
+with `texlive/texlive`, Word export with `pandoc/latex`). Without Docker the
+project also compiles in Overleaf.
+
+Optional environment variables: `TESIS_MAILTO` (polite pool for OpenAlex,
+Crossref and Unpaywall), `CORE_API_KEY`, `SCOPUS_API_KEY`, `IEEE_API_KEY`.
+
+Start with: *"quiero empezar mi tesis"*.

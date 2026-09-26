@@ -1,0 +1,33 @@
+' Diagrama de casos de uso. Reemplaza actores y casos por los del sistema real.
+@startuml casos-de-uso
+skinparam dpi 300
+skinparam defaultFontName Arial
+skinparam monochrome true
+skinparam shadowing false
+left to right direction
+
+actor Cliente
+actor Operador
+actor Administrador
+actor "API de OpenAI" as AI <<sistema>>
+
+rectangle "Sistema web de atención por WhatsApp" {
+  usecase "Enviar consulta\npor WhatsApp" as UC1
+  usecase "Recibir respuesta\nautomática" as UC2
+  usecase "Derivar a\noperador humano" as UC3
+  usecase "Atender\nconversación" as UC4
+  usecase "Consultar\nhistorial" as UC5
+  usecase "Configurar instrucciones\ndel asistente" as UC6
+  usecase "Ver reportes\nde atención" as UC7
+}
+
+Cliente --> UC1
+Cliente --> UC2
+UC1 ..> UC2 : <<include>>
+UC3 .> UC2 : <<extend>>
+Operador --> UC4
+Operador --> UC5
+Administrador --> UC6
+Administrador --> UC7
+UC2 --> AI
+@enduml

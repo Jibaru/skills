@@ -1,0 +1,18 @@
+%% Proceso de atención TO-BE (con el sistema).
+flowchart LR
+    subgraph C["Cliente"]
+        A1(["Inicio"]) --> A2["Envía consulta<br/>por WhatsApp"]
+        A9["Recibe respuesta"] --> A10(["Fin"])
+    end
+    subgraph S["Sistema web + IA"]
+        S1["Recibe mensaje<br/>(webhook)"] --> S2["Genera respuesta con<br/>la API de OpenAI"]
+        S2 --> S3{"¿Requiere<br/>intervención humana?"}
+        S3 -- "No" --> S4["Envía respuesta<br/>automática"]
+        S3 -- "Sí" --> S5["Deriva al panel web"]
+    end
+    subgraph O["Operador"]
+        O1["Atiende desde el panel<br/>con el historial completo"]
+    end
+    A2 --> S1
+    S4 --> A9
+    S5 --> O1 --> A9

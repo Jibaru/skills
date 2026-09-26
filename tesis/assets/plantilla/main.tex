@@ -1,0 +1,16 @@
+% Documento principal. No escribas contenido aquí.
+%   - Lo estructural (título, problemas, objetivos, hipótesis, variables, matrices,
+%     cronograma, presupuesto, carátula) se edita en tesis.yaml.
+%   - El orden de capítulos y la numeración oficial UNTELS los arma
+%     generado/estructura.tex según meta.modo (plan | tesis) y meta.con_hipotesis.
+%   - El texto de cada sección vive en capitulos/, preliminares/ y anexos/.
+% Compilar: scripts/compilar.sh (o .ps1) desde la skill `tesis`, que primero corre
+% generar.py. En Overleaf compila tal cual, porque generado/ está versionado.
+\documentclass{untels}
+
+\input{generado/meta}          % \modoplan|\modotesis, \conhipotesistrue|false, datos de carátula
+\addbibresource{bib/referencias.bib}
+
+\begin{document}
+\input{generado/estructura}
+\end{document}

@@ -1,0 +1,13 @@
+%% Embudo de selección de la revisión de literatura (tabla de filtrado del Taller 01).
+%% Reemplaza las cifras por las de literatura/busquedas.md.
+flowchart TB
+    I["Registros identificados en bases de datos<br/>(Scopus, IEEE Xplore, ScienceDirect, …)<br/>n = 000"]
+    D["Registros tras eliminar duplicados<br/>n = 000"]
+    T["Seleccionados por título<br/>n = 000"]
+    A["Seleccionados por resumen<br/>n = 000"]
+    F["Evaluados a texto completo<br/>n = 000"]
+    R["Incluidos en la revisión<br/>n = 00<br/>(nacionales: 0 · internacionales: 0)"]
+    I --> D --> T --> A --> F --> R
+    T -.-> X1["Excluidos por título<br/>n = 000"]
+    A -.-> X2["Excluidos por resumen<br/>n = 000"]
+    F -.-> X3["Excluidos a texto completo<br/>n = 00"]

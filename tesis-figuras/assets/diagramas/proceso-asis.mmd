@@ -1,0 +1,15 @@
+%% Proceso de atención AS-IS (antes del sistema). Cada carril es un subgraph.
+%% Si sirve para justificar indicadores, anota tiempos o costos por actividad.
+flowchart LR
+    subgraph C["Cliente"]
+        A1(["Inicio"]) --> A2["Envía consulta<br/>por WhatsApp"]
+        A9["Recibe respuesta"] --> A10(["Fin"])
+    end
+    subgraph O["Personal de atención"]
+        B1["Revisa mensajes pendientes<br/>manualmente"] --> B2{"¿Conoce la<br/>respuesta?"}
+        B2 -- "Sí" --> B4["Redacta respuesta"]
+        B2 -- "No" --> B3["Consulta a otra área"]
+        B3 --> B4
+    end
+    A2 --> B1
+    B4 --> A9
