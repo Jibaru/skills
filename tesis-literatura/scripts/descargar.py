@@ -156,7 +156,7 @@ def main():
     g.add_argument("--doi")
     a = ap.parse_args()
     if not MAILTO:
-        log("Aviso: sin TESIS_MAILTO no se consulta Unpaywall (export TESIS_MAILTO=tu@correo)")
+        log("Aviso: sin TESIS_MAILTO no se consulta Unpaywall (defínelo en el entorno o en <proyecto>/.env; ver claves.py)")
 
     r = rutas(a.proyecto)
     filas = leer_csv(r["candidatos"])

@@ -3,7 +3,7 @@
 
 Uso:
   python buscar.py --proyecto RUTA --cadena '("chatbot" OR "conversational agent") AND (whatsapp)' \
-      [--fuentes openalex,s2,crossref,arxiv,alicia,lareferencia] [--desde 2021] [--hasta 2026] \
+      [--fuentes auto|openalex,s2,crossref,arxiv,alicia,lareferencia,core,scopus,ieee] [--desde 2021] [--hasta 2026] \
       [--max 50] [--idiomas en,es] [--tesis]
 
 La cadena usa la sintaxis del curso: sinónimos con OR dentro de paréntesis y
@@ -21,6 +21,10 @@ Fuentes:
   scopus        requiere SCOPUS_API_KEY (acceso institucional)
   ieee          requiere IEEE_API_KEY
 
+Con --fuentes auto (por defecto) se usan las cinco abiertas más core/scopus/ieee
+cuando su key está en el entorno o en <proyecto>/.env. Al final se imprime qué
+fuentes se usaron y cuáles se omitieron; lo mismo queda en busquedas.md.
+
 Si --desde no se da, se usa año actual − meta.antecedentes_ventana_anios de tesis.yaml.
 """
 
@@ -32,8 +36,10 @@ import re
 import time
 import xml.etree.ElementTree as ET
 
-from comun import (CAMPOS_CANDIDATO, anio_actual, escribir_csv, http, http_json, leer_csv,
-                   log, norm_doi, norm_titulo, rutas, ventana_anios)
+from comun import (CAMPOS_CANDIDATO, anio_actual, escribir_csv, fuentes_con_clave, http, http_json,
+                   leer_csv, log, norm_doi, norm_titulo, requisito_fuente, rutas, ventana_anios)
+
+FUENTES_BASE = ["openalex", "s2", "crossref", "alicia", "lareferencia"]
 
 # ------------------------------------------------------------ cadena booleana
 
@@ -266,7 +272,8 @@ def scopus(grupos, desde, hasta, maximo, idiomas, tesis):
         return []
     consulta = f"TITLE-ABS-KEY({a_booleana(grupos)}) AND PUBYEAR > {desde - 1} AND PUBYEAR < {hasta + 1}"
     d = http_json("https://api.elsevier.com/content/search/scopus",
-                  {"query": consulta, "count": min(maximo, 25)}, {"X-ELS-APIKey": clave, "Accept": "application/json"})
+                  {"query": consulta, "count": min(maximo, 25)}, {"X-ELS-APIKey": clave, "Accept": "application/json",
+                   **({"X-ELS-Insttoken": os.environ["SCOPUS_INSTTOKEN"]} if os.environ.get("SCOPUS_INSTTOKEN") else {})})
     res = d.get("search-results", {})
     log(f"  scopus: {res.get('opensearch:totalResults')} coincidencias totales")
     return [fila(fuente="Scopus", anio=(e.get("prism:coverDate") or "")[:4], titulo=e.get("dc:title"),
@@ -328,8 +335,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--proyecto", default=".")
     ap.add_argument("--cadena", required=True)
-    ap.add_argument("--fuentes", default="openalex,s2,crossref,alicia,lareferencia",
-                    help="arxiv, core, scopus, ieee son opcionales")
+    ap.add_argument("--fuentes", default="auto",
+                    help="auto = openalex,s2,crossref,alicia,lareferencia + core/scopus/ieee si hay key; "
+                         "o una lista separada por comas (arxiv es opcional)")
     ap.add_argument("--desde", type=int)
     ap.add_argument("--hasta", type=int)
     ap.add_argument("--max", type=int, default=50, help="máximo por fuente")
@@ -347,17 +355,31 @@ def main():
     idiomas = [x for x in a.idiomas.split(",") if x]
     log(f"Buscando {grupos} ({desde}-{hasta})")
 
+    if a.fuentes == "auto":
+        pedidas = FUENTES_BASE + fuentes_con_clave()
+    else:
+        pedidas = [f.strip() for f in a.fuentes.split(",") if f.strip()]
+    omitidas = []  # (fuente, motivo)
+    for opcional in ("core", "scopus", "ieee"):
+        falta = requisito_fuente(opcional)
+        if falta and (a.fuentes == "auto" or opcional in pedidas):
+            omitidas.append((opcional, f"sin {falta}"))
+    pedidas = [f for f in pedidas if not requisito_fuente(f)]
+
     existentes = leer_csv(r["candidatos"])
     conteo = []
-    for nombre in [f.strip() for f in a.fuentes.split(",") if f.strip()]:
+    for nombre in pedidas:
         fn = FUENTES.get(nombre)
         if not fn:
             log(f"  fuente desconocida: {nombre}")
+            omitidas.append((nombre, "desconocida"))
             continue
         try:
             nuevos = fn(grupos, desde, hasta, a.max, idiomas, a.tesis)
         except Exception as e:  # una fuente caída no detiene las demás
-            log(f"  {nombre}: ERROR {e}")
+            pista = " (key rechazada: revisa con `python claves.py --probar`)" if any(
+                c in str(e) for c in ("401", "403")) else ""
+            log(f"  {nombre}: ERROR {e}{pista}")
             conteo.append((nombre, "error", 0))
             continue
         existentes, agregados = fusionar(existentes, nuevos)
@@ -375,10 +397,20 @@ def main():
         f.write("| Fuente | Recuperados | Nuevos (tras deduplicar) |\n|---|---|---|\n")
         for n, rec, ag in conteo:
             f.write(f"| {n} | {rec} | {ag} |\n")
+        if omitidas:
+            f.write("\nFuentes omitidas: " + "; ".join(f"{n} ({m})" for n, m in omitidas) + "\n")
         f.write("\n")
 
     total_nuevos = sum(c[2] for c in conteo)
+    usadas = [n for n, rec, _ in conteo if rec != "error"]
+    fallidas = [n for n, rec, _ in conteo if rec == "error"]
     print(f"{total_nuevos} candidatos nuevos; {len(existentes)} en {r['candidatos']}")
+    print(f"Fuentes usadas: {', '.join(usadas) or 'ninguna'}")
+    if fallidas:
+        print(f"Fuentes con error: {', '.join(fallidas)}")
+    if omitidas:
+        print("Fuentes omitidas: " + "; ".join(f"{n} ({m})" for n, m in omitidas)
+              + " — ver `python claves.py` para conseguirlas")
 
 
 if __name__ == "__main__":

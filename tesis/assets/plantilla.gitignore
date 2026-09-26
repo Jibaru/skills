@@ -26,3 +26,6 @@ tesis.docx
 # Python
 __pycache__/
 .venv/
+
+# API keys (tesis-literatura/scripts/claves.py): nunca se versionan
+.env

@@ -81,7 +81,9 @@ tesis/
    indique el usuario. Si existe, lee `ESTADO.md` y ve a "Retomar".
 2. **Crea el proyecto**: pregunta dónde (recomienda un repo aparte, privado), corre
    `nuevo-proyecto`, rellena `meta` en `tesis.yaml` (autores, asesor, año, carátula).
-   Verifica que Docker funcione y compila la plantilla vacía una vez.
+   Verifica que Docker funcione y compila la plantilla vacía una vez. Revisa las API
+   keys de literatura con `python <skills>/tesis-literatura/scripts/claves.py --proyecto .`
+   y ofrece configurar las que falten en `.env` (paso 0 de `tesis-literatura`).
 3. **Elige el punto de entrada** con una ronda de preguntas (formato de la skill
    `grilling`: ❓ Qn con ➡️ recomendación):
    - **Software primero**: el usuario ya tiene el sistema hecho o planificado. Analiza

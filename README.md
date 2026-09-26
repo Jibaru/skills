@@ -119,7 +119,12 @@ Requires Python 3.10+, Node.js 18+ (grill-me, figures) and Docker (LaTeX build
 with `texlive/texlive`, Word export with `pandoc/latex`). Without Docker the
 project also compiles in Overleaf.
 
-Optional environment variables: `TESIS_MAILTO` (polite pool for OpenAlex,
-Crossref and Unpaywall), `CORE_API_KEY`, `SCOPUS_API_KEY`, `IEEE_API_KEY`.
+Optional API keys, read from the environment or from the thesis project's
+`.env` (git-ignored): `TESIS_MAILTO` (polite pool for OpenAlex, Crossref and
+Unpaywall), `S2_API_KEY`, `CORE_API_KEY`, `IEEE_API_KEY`, `SCOPUS_API_KEY`
+(+ `SCOPUS_INSTTOKEN` off campus). `tesis-literatura/scripts/claves.py` shows
+which are missing and where to get them, creates the `.env` (`--env`) and tests
+each key (`--probar`); searches enable keyed sources automatically and report
+what was skipped.
 
 Start with: *"quiero empezar mi tesis"*.

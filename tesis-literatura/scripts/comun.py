@@ -1,13 +1,16 @@
 """Utilidades compartidas por los scripts de tesis-literatura.
 
 Solo stdlib. El directorio del proyecto de tesis se pasa con --proyecto (por
-defecto el directorio actual). Variables de entorno:
+defecto el directorio actual). Las variables se leen del entorno o de
+<proyecto>/.env (ignorado por git; el entorno tiene prioridad). `claves.py`
+muestra cuáles faltan y dónde conseguirlas. Variables:
 
   TESIS_MAILTO       correo para el "polite pool" de OpenAlex, Crossref y Unpaywall
   S2_API_KEY         opcional, sube el límite de Semantic Scholar
   CORE_API_KEY       opcional, activa CORE
   SCOPUS_API_KEY     opcional, activa Scopus (requiere acceso institucional)
   IEEE_API_KEY       opcional, activa IEEE Xplore
+  SCOPUS_INSTTOKEN   opcional, token institucional para usar Scopus fuera de la red
 """
 
 from __future__ import annotations
@@ -24,6 +27,82 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+
+# ---------------------------------------------------------------- claves
+
+# Registro de variables de entorno. `fuente` es el nombre en --fuentes que la key activa.
+CLAVES = [
+    {"var": "TESIS_MAILTO", "fuente": None, "nombre": "Correo (polite pool)",
+     "donde": "tu correo; no requiere registro",
+     "da": "prioridad en OpenAlex y Crossref; sin él no se consulta Unpaywall (PDFs abiertos)",
+     "requisito": "ninguno"},
+    {"var": "S2_API_KEY", "fuente": None, "nombre": "Semantic Scholar",
+     "donde": "https://www.semanticscholar.org/product/api#api-key-form",
+     "da": "más consultas por minuto (sin key, Semantic Scholar corta con 429 a menudo)",
+     "requisito": "gratis, con formulario"},
+    {"var": "CORE_API_KEY", "fuente": "core", "nombre": "CORE",
+     "donde": "https://core.ac.uk/services/api",
+     "da": "búsqueda en ~300 M de documentos de repositorios y más PDFs abiertos al descargar",
+     "requisito": "gratis, con registro"},
+    {"var": "IEEE_API_KEY", "fuente": "ieee", "nombre": "IEEE Xplore",
+     "donde": "https://developer.ieee.org/member/register",
+     "da": "búsqueda directa en IEEE Xplore (metadatos y abstracts; no PDFs)",
+     "requisito": "gratis, con registro; límite diario de consultas"},
+    {"var": "SCOPUS_API_KEY", "fuente": "scopus", "nombre": "Scopus",
+     "donde": "https://dev.elsevier.com/apikey/manage",
+     "da": "búsqueda directa en Scopus con su sintaxis TITLE-ABS-KEY",
+     "requisito": "key gratis, pero la API solo responde desde la red de una institución "
+                  "suscrita o con SCOPUS_INSTTOKEN (pregunta en la biblioteca de UNTELS)"},
+    {"var": "SCOPUS_INSTTOKEN", "fuente": None, "nombre": "Scopus (token institucional)",
+     "donde": "lo emite Elsevier a la biblioteca de la institución",
+     "da": "usar Scopus fuera de la red de la universidad", "requisito": "institución suscrita"},
+]
+
+
+def cargar_env(proyecto: str | Path | None = None) -> Path | None:
+    """Carga <proyecto>/.env (formato CLAVE=valor). Las variables ya definidas en el
+    entorno ganan. Devuelve la ruta cargada o None."""
+    if proyecto is None:
+        proyecto = "."
+        for i, arg in enumerate(sys.argv):
+            if arg == "--proyecto" and i + 1 < len(sys.argv):
+                proyecto = sys.argv[i + 1]
+            elif arg.startswith("--proyecto="):
+                proyecto = arg.split("=", 1)[1]
+    ruta = Path(proyecto) / ".env"
+    if not ruta.is_file():
+        return None
+    for linea in ruta.read_text(encoding="utf-8").splitlines():
+        linea = linea.strip()
+        if not linea or linea.startswith("#") or "=" not in linea:
+            continue
+        k, v = linea.split("=", 1)
+        k = k.strip().removeprefix("export ").strip()
+        v = v.strip().strip('"').strip("'")
+        if k and v and not os.environ.get(k):
+            os.environ[k] = v
+    return ruta
+
+
+ENV_CARGADO = cargar_env()
+
+
+def tiene_clave(var: str) -> bool:
+    return bool(os.environ.get(var, "").strip())
+
+
+def fuentes_con_clave() -> list[str]:
+    """Fuentes opcionales cuya key está disponible."""
+    return [c["fuente"] for c in CLAVES if c["fuente"] and tiene_clave(c["var"])]
+
+
+def requisito_fuente(fuente: str) -> str | None:
+    """Variable que falta para usar `fuente`, o None si no requiere o ya está."""
+    for c in CLAVES:
+        if c["fuente"] == fuente and not tiene_clave(c["var"]):
+            return c["var"]
+    return None
+
 
 MAILTO = os.environ.get("TESIS_MAILTO", "")
 UA = f"Mozilla/5.0 (compatible; tesis-literatura/1.0; +https://github.com/Jibaru/skills{'; mailto:' + MAILTO if MAILTO else ''})"

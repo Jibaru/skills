@@ -26,7 +26,7 @@ Antes de empezar, lee `tesis.yaml` (variables, dimensiones e indicadores) y las 
 | `literatura/matriz-revision.csv/.xlsx` | matriz de revisión del Taller 02 |
 | `literatura/distribucion.md/.tex` | Tabla "Distribución de artículos" por fuente |
 
-Los scripts están en `scripts/` de esta skill y se ejecutan con `--proyecto <ruta-de-la-tesis>`. Antes, exporta `TESIS_MAILTO=<correo del usuario>`: da acceso al "polite pool" de OpenAlex y Crossref, y Unpaywall no funciona sin él.
+Los scripts están en `scripts/` de esta skill y se ejecutan con `--proyecto <ruta-de-la-tesis>`. Leen las API keys del entorno o de `<proyecto>/.env` (ignorado por git; el entorno tiene prioridad). Ver Paso 0.
 
 ## Fuentes y acceso
 
@@ -40,9 +40,23 @@ Solo se usan fuentes legales de metadatos y de acceso abierto. Esta skill **no u
 | `alicia` | ALICIA-CONCYTEC: tesis y artículos peruanos | ninguno |
 | `lareferencia` | La Referencia: tesis y artículos latinoamericanos | ninguno |
 | `arxiv` | preprints. Limita la tasa con 406, así que no está por defecto | ninguno |
-| `core`, `scopus`, `ieee` | búsqueda directa en esas bases | `CORE_API_KEY`, `SCOPUS_API_KEY`, `IEEE_API_KEY` |
+| `core`, `scopus`, `ieee` | búsqueda directa en esas bases | `CORE_API_KEY`, `SCOPUS_API_KEY` (+ `SCOPUS_INSTTOKEN` fuera de la red de la universidad), `IEEE_API_KEY` |
+
+Con `--fuentes auto` (por defecto) se usan las cinco abiertas más `core`, `scopus` e `ieee` cuando su key existe. Las que no tienen key se omiten, y tanto la salida del script como `busquedas.md` dicen qué fuentes se usaron, cuáles fallaron y cuáles se omitieron y por qué.
 
 RENATI (SUNEDU) está detrás de una protección anti-bots y no se puede consultar desde scripts. Las tesis peruanas se cubren con ALICIA, que cosecha los repositorios universitarios, y con La Referencia.
+
+## Paso 0. API keys (una vez por proyecto, y cuando el usuario lo pida)
+
+1. Corre `python scripts/claves.py --proyecto P`. Muestra qué variables están, cuáles faltan, qué fuente activa cada una y dónde conseguirla. Nunca imprimas el valor de una key.
+2. Si falta alguna, pregúntale al usuario en una ronda (formato ❓/➡️) cuáles quiere configurar. Recomendación por defecto:
+   - `TESIS_MAILTO`: **siempre**. Es su correo, sin registro, y sin él no hay Unpaywall.
+   - `CORE_API_KEY`, `IEEE_API_KEY` y `S2_API_KEY`: gratis con registro; vale la pena.
+   - `SCOPUS_API_KEY`: solo si UNTELS tiene suscripción a Scopus. La key es gratis, pero la API no responde fuera de la red de una institución suscrita sin `SCOPUS_INSTTOKEN`, que se pide a la biblioteca.
+   - Deja claro que ninguna es obligatoria: OpenAlex ya indexa lo que está en Scopus e IEEE por DOI.
+3. Si quiere configurarlas: `python scripts/claves.py --proyecto P --env` crea `<proyecto>/.env` con las variables vacías y comentadas. **El usuario pega las keys él mismo**; no le pidas que las escriba en el chat. Si igual las pega en el chat, escríbelas en `.env` y no las repitas en ningún otro archivo ni mensaje.
+4. Verifica con `python scripts/claves.py --proyecto P --probar`, que hace una consulta mínima con cada key y dice si funciona o si fue rechazada (401/403).
+5. Confirma que `.env` está en el `.gitignore` del proyecto antes de seguir.
 
 ## Paso 1. Protocolo (con el usuario)
 
@@ -67,7 +81,7 @@ python scripts/buscar.py --proyecto P --cadena '<cadena artículos>' --max 50 --
 python scripts/buscar.py --proyecto P --cadena '<cadena tesis>' --tesis --fuentes alicia,lareferencia,openalex --max 30 --etiqueta "Tesis"
 ```
 
-Las fuentes se consultan una por una. Si alguna falla, el script sigue con las demás e imprime el error. Cada búsqueda deja en `busquedas.md` su tabla de conteos. Si salen menos de 30 candidatos, amplía los sinónimos. Si salen más de 300, añade un concepto con `AND`.
+Las fuentes se consultan una por una. Si alguna falla, el script sigue con las demás e imprime el error. Al terminar, dile al usuario qué fuentes se usaron y cuáles se omitieron; si una key fue rechazada, sugiere `claves.py --probar`. Cada búsqueda deja en `busquedas.md` su tabla de conteos. Si salen menos de 30 candidatos, amplía los sinónimos. Si salen más de 300, añade un concepto con `AND`.
 
 ## Paso 3. Embudo (título → abstract → texto)
 
