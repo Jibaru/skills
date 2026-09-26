@@ -48,13 +48,13 @@ RENATI (SUNEDU) está detrás de una protección anti-bots y no se puede consult
 
 ## Paso 0. API keys (una vez por proyecto, y cuando el usuario lo pida)
 
-1. Corre `python scripts/claves.py --proyecto P`. Muestra qué variables están, cuáles faltan, qué fuente activa cada una y dónde conseguirla. Nunca imprimas el valor de una key.
+1. Corre `python scripts/claves.py --proyecto P`. Muestra qué variables están, cuáles faltan, qué fuente activa cada una y, en «Cómo conseguir las que faltan», los pasos y URLs verificadas para cada una. **Muéstrale al usuario esos pasos tal cual**, con las URLs completas, solo de las keys que decida configurar. Nunca imprimas el valor de una key.
 2. Si falta alguna, pregúntale al usuario en una ronda (formato ❓/➡️) cuáles quiere configurar. Recomendación por defecto:
    - `TESIS_MAILTO`: **siempre**. Es su correo, sin registro, y sin él no hay Unpaywall.
    - `CORE_API_KEY`, `IEEE_API_KEY` y `S2_API_KEY`: gratis con registro; vale la pena.
    - `SCOPUS_API_KEY`: solo si UNTELS tiene suscripción a Scopus. La key es gratis, pero la API no responde fuera de la red de una institución suscrita sin `SCOPUS_INSTTOKEN`, que se pide a la biblioteca.
    - Deja claro que ninguna es obligatoria: OpenAlex ya indexa lo que está en Scopus e IEEE por DOI.
-3. Si quiere configurarlas: `python scripts/claves.py --proyecto P --env` crea `<proyecto>/.env` con las variables vacías y comentadas. **El usuario pega las keys él mismo**; no le pidas que las escriba en el chat. Si igual las pega en el chat, escríbelas en `.env` y no las repitas en ningún otro archivo ni mensaje.
+3. Si quiere configurarlas: `python scripts/claves.py --proyecto P --env` crea `<proyecto>/.env` con las variables vacías y, encima de cada una, los mismos pasos y URLs. **El usuario pega las keys él mismo**; no le pidas que las escriba en el chat. Si igual las pega en el chat, escríbelas en `.env` y no las repitas en ningún otro archivo ni mensaje.
 4. Verifica con `python scripts/claves.py --proyecto P --probar`, que hace una consulta mínima con cada key y dice si funciona o si fue rechazada (401/403).
 5. Confirma que `.env` está en el `.gitignore` del proyecto antes de seguir.
 

@@ -75,8 +75,9 @@ def main():
             lineas = ["# API keys de tesis-literatura. Este archivo NO se versiona (.gitignore).",
                       "# Deja vacío lo que no tengas: esa fuente se omite y se avisa.", ""]
             for c in CLAVES:
-                lineas += [f"# {c['nombre']}: {c['da']}", f"#   Dónde: {c['donde']} ({c['requisito']})",
-                           f"{c['var']}=", ""]
+                lineas += [f"# {c['nombre']}: {c['da']}", f"#   Requisito: {c['requisito']}"]
+                lineas += [f"#   {i}. {paso}" for i, paso in enumerate(c["pasos"], 1)]
+                lineas += [f"{c['var']}=", ""]
             ruta.write_text("\n".join(lineas), encoding="utf-8")
             print(f"Creado {ruta}. Rellena los valores y vuelve a correr este script.")
         return
@@ -96,6 +97,14 @@ def main():
             faltan.append(c)
         activa = f"fuente `{c['fuente']}`" if c["fuente"] else "—"
         print(f"| `{var}` | {estado} | {activa} | {c['da']} | {c['donde']} ({c['requisito']}) |")
+
+    if faltan:
+        print("\n## Cómo conseguir las que faltan\n")
+        for c in faltan:
+            print(f"### {c['nombre']} (`{c['var']}`)\n")
+            for i, paso in enumerate(c["pasos"], 1):
+                print(f"{i}. {paso}")
+            print(f"\nLuego añade a {Path(a.proyecto) / '.env'}: `{c['var']}=<valor>`\n")
 
     print()
     if not MAILTO:
