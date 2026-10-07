@@ -1,0 +1,22 @@
+{
+  "out": "assets/source/music_raw",
+  "style": "Instrumental horror film score, no vocals, no choir, no drum kit, no synth pop. Rural setting, slow, restrained, dread-building.",
+  "cues": {
+    "main_theme": {
+      "ms": 92000,
+      "prompt": "Main theme: sparse prepared piano playing a melancholic pentatonic motif, long pauses, breathy flute answering phrases, low sustained cello underneath, distant wind. Very quiet, intimate, uneasy. Around 60 bpm. Ends softly on an unresolved note."
+    },
+    "dread_bed": {
+      "ms": 125000,
+      "prompt": "Ambient dread drone bed for a night scene: deep low drone, bowed metal textures, distant low thuds every few seconds, no melody, no rhythm groove, no build, constant even intensity from start to end, suitable for seamless looping."
+    },
+    "tension": {
+      "ms": 62000,
+      "prompt": "Tension layer: col legno and tremolo strings, nervous sul ponticello, a slow heartbeat-like low pulse around 60 bpm, constant intensity, no melody, no ending, suitable for looping under other music."
+    },
+    "stingers": {
+      "ms": 40000,
+      "prompt": "A sequence of separate horror stingers separated by about two seconds of total silence each: a bowed cymbal swell ending in an orchestral slam; an eerie pitch glide; a dissonant string cluster stab; a low brass and piano-cluster impact with a long tail."
+    }
+  }
+}

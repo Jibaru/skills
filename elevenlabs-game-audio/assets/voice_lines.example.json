@@ -1,0 +1,44 @@
+{
+  "model": "eleven_multilingual_v2",
+  "language_code": "ja",
+  "text_field": "text",
+  "raw": "assets/source/voice_raw",
+  "out": "assets/audio/voice",
+  "settings": { "similarity_boost": 0.8, "use_speaker_boost": true },
+  "fx": {
+    "cave": "aecho=0.8:0.7:120|240:0.4|0.25,lowpass=f=5000,loudnorm=I=-20:TP=-3"
+  },
+  "cast": {
+    "narrator": {
+      "voice": "<voice_id from the Voice Library or your account>",
+      "name": "Voice name — ElevenLabs Voice Library (for CREDITS.md)",
+      "fx": "narration",
+      "settings": { "stability": 0.55, "style": 0.2 }
+    },
+    "anchor": {
+      "voice": "<voice_id>",
+      "name": "News anchor voice",
+      "fx": "tv",
+      "settings": { "stability": 0.75, "style": 0.1 }
+    },
+    "grandmother": {
+      "voice": "<voice_id saved with voice_design.mjs>",
+      "name": "Designed voice (Voice Design)",
+      "fx": "clean",
+      "settings": { "stability": 0.45, "style": 0.35 }
+    },
+    "imitation": {
+      "voice": "<same voice_id as the character being imitated>",
+      "name": "Imitation of the son's voice",
+      "fx": "mimic",
+      "settings": { "stability": 0.95, "style": 0 }
+    }
+  },
+  "lines": {
+    "INTRO_1": { "who": "narrator", "text": "あの夜、台風が谷を通った。あんな雨は初めてだった。" },
+    "NEWS_1": { "who": "anchor", "text": "昨夜、岩手県の山間部で、不審な光が目撃されました。" },
+    "GRANDMA_1": { "who": "grandmother", "text": "夜は戸を開けちゃいけないよ。誰の声がしてもね。" },
+    "DOOR_1": { "who": "imitation", "text": "開けて。俺だよ。" },
+    "CAVE_1": { "who": "narrator", "text": "奥から、水の音がした。", "fx": "cave", "out": "assets/audio/voice/cave" }
+  }
+}
