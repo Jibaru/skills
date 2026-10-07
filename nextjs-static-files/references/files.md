@@ -1,6 +1,6 @@
 # nextjs-static-files: complete files
 
-Verbatim from wapi. Paths are relative to the repo root. Note: the size figures inside `demo-video.tsx`'s comments are stale (see SKILL.md, "Measure the artifact, not the comment"); the code is current.
+Verbatim from wapi. Paths are relative to the repo root.
 
 ## apps/web/src/components/demo-video.tsx
 

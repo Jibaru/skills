@@ -87,11 +87,20 @@ Measure any new file against that total. Two real decisions were made against it
   (`.github/workflows/release.yml`). The site points at `releases/latest/download/…`. Only
   the 36 KB poster is committed, because it's what paints before anything else loads.
 
-**Measure the artifact, not the comment.** `demo-video.tsx` still says the mp4 is ~4.2 MB
-and the webm ~2.7 MB, "listed first so most browsers take it". The webm grew to almost twice
-the mp4, so listing it first now sends most browsers the bigger file. A size written in a
-comment goes stale and quietly keeps deciding things. Check real sizes
-(`gh release view --json assets`, `ls -l`) when ordering formats or setting a budget.
+**Check a comment's claim against the artifact.** `demo-video.tsx` once said the mp4 was
+~4.2 MB and the webm ~2.7 MB, "listed first so most browsers take it". That was true at
+1120×630. When the render moved to 2560×1440, h264 at CRF 26 overtook vp9 at CRF 34, and nobody
+re-derived the order. A browser plays the first `<source>` it can, so Chrome and Firefox
+downloaded 9 MB on every play instead of 4.9 MB. The number in the comment wasn't only wrong,
+it was **load-bearing**: it justified a decision long after it stopped being true. Fixed in wapi
+`c94d569` by putting the mp4 first and moving the figures out of the comment. The comment now
+says to measure the release assets before touching the order.
+
+So when a comment states a size, a speed or a count, check it against the real thing
+(`gh release view --json assets`, `ls -l`, a benchmark) before acting on it. Order formats
+by measured bytes. If a format never wins (with mp4 first, every browser plays h264 and the
+webm is never fetched), it's dead weight in the release, so consider whether it should keep
+being published.
 
 ## Pattern: large asset outside the repo, with an override
 
