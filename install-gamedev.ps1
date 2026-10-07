@@ -22,7 +22,7 @@ function Write-Success { Write-Host $args -ForegroundColor Green }
 function Write-Info { Write-Host $args -ForegroundColor Cyan }
 function Write-Warning { Write-Host $args -ForegroundColor Yellow }
 
-$OwnSkills = @("gamedev", "game-design-doc", "game-assets", "game-playtest")
+$OwnSkills = @("gamedev", "game-design-doc", "game-assets", "game-playtest", "game-trailer", "game-landing-page", "godot-field-notes", "elevenlabs-game-audio")
 
 # gamedev-skills/awesome-gamedev-agent-skills: engine-agnostic design, genres, jams, publishing.
 # Left out on purpose: router and create-game-assets (overlap gamedev/game-assets),

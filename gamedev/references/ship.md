@@ -68,19 +68,77 @@ godot --headless --path . --export-release "Linux" export/linux/MyGame.x86_64
 godot --headless --path . --export-release "Web" export/web/index.html
 ```
 
-The preset names must match `export_presets.cfg` exactly. For Steam, use
-GodotSteam. The `godot-export` and `steam-publish` skills cover the details.
+The preset names must match the `name=` lines in `export_presets.cfg` exactly. In
+Godot 4 the Linux platform is `Linux`, not "Linux/X11". For Steam, use GodotSteam.
+For exporting on Windows with no editor GUI (templates from the `.tpz`, `embed_pck`, the icon
+sizes, a smoke test of the real exe, and a free ad-hoc-signed universal macOS build), see
+`godot-field-notes/references/export.md`. It was proven end to end shipping THE ONES.
 
-## itch.io with butler
+## GitHub release (desktop builds)
+
+A private source repo can't serve public downloads. Keep a separate public repo
+(`<game>-game`) for the landing page and the releases. **Keep the asset names constant
+across versions** (`Game-win64.zip`, `Game-macos.zip`), so
+`https://github.com/<org>/<repo>/releases/latest/download/<name>` links on the landing page
+and in the README never change. Don't print the version or size next to those links: they go stale
+on the next release.
+
+Each release bumps the version in two files (THE ONES did seven releases this way,
+v0.6.0 → v0.7.3): `project.godot` (`config/version="0.7.3"`) and `export_presets.cfg`
+(`application/file_version="0.7.3.0"`, `application/product_version="0.7.3.0"`, and the macOS
+`application/short_version` / `application/version`).
 
 ```bash
-butler login
-butler push dist yourname/my-game:html5 --userversion 0.1.0
-butler push src-tauri/target/release/bundle/nsis yourname/my-game:windows --userversion 0.1.0
+VER=0.7.3; OLD=0.7.2
+grep -rl "$OLD" project.godot export_presets.cfg | xargs -r sed -i "s/$OLD/$VER/g"
+git diff --stat project.godot export_presets.cfg      # check exactly these two changed
+
+GODOT=./tools/Godot_v4.7.2-stable_win64_console.exe   # the console build, or there is no output
+timeout 1200 $GODOT --headless --path . --export-release "Windows Desktop" build/windows/Game.exe
+timeout 3000 $GODOT --headless --path . --export-release "macOS" build/macos/Game.zip
+
+mkdir -p build/release && rm -f build/release/Game-win64.zip
+cp CREDITS.md README.txt build/windows/
+(cd build/windows && powershell -NoProfile -Command "Compress-Archive -Path Game.exe,CREDITS.md,README.txt -DestinationPath ../release/Game-win64.zip -Force")
+cp build/macos/Game.zip build/release/Game-macos.zip   # the Godot zip as-is: re-zipping on Windows drops the exec bit
 ```
 
-Download butler from https://itch.io/docs/butler/. The `itch-publish` skill has page
-setup and channel conventions.
+Write the release notes with the **Write tool** into the scratchpad. On Windows, use the absolute
+scratchpad path, not `/tmp`: Git Bash's `/tmp` isn't the `C:\tmp` that native tools see. Heredocs
+with quotes or non-ASCII text broke in practice. Keep the notes player-facing, spoiler-free, and
+include first-launch instructions:
+
+```markdown
+**GAME — v0.7.3**
+
+- Player-facing, spoiler-free changes.
+
+**Windows** — `Game-win64.zip`: unzip, run `Game.exe`. SmartScreen: "More info" → "Run anyway".
+**macOS** — `Game-macos.zip`: unzip, move to Applications. First launch: System Settings →
+Privacy & Security → **Open Anyway** (installing through the itch app avoids this).
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+```
+
+```bash
+gh release create v$VER build/release/Game-win64.zip build/release/Game-macos.zip \
+  --repo ORG/REPO-game --title "GAME v$VER" --notes-file "$SCRATCH/notes.md"
+# later fixes: gh release upload v$VER build/release/Game-win64.zip --clobber
+#              gh release edit v$VER --notes-file "$SCRATCH/notes.md"
+
+# verify the stable links resolve to the new assets
+for a in win64 macos; do
+  curl -sIL "https://github.com/ORG/REPO-game/releases/latest/download/Game-$a.zip" | grep -i content-length | tail -1
+done
+```
+
+`Compress-Archive` caps out around 2 GB per file. For anything bigger, use `tar -a -c -f out.zip ...`
+(Windows' bsdtar). Ship the GitHub release and itch with the **same version** every time.
+
+## itch.io
+
+See `references/itch.md`: the agent workflow (local butler, interactive login, the URL
+the user must give you), a push loop with retries, and the failures that actually happened.
 
 ## Release checklist
 
@@ -90,3 +148,12 @@ setup and channel conventions.
 - [ ] Audio starts only after the first user input (browsers block autoplay)
 - [ ] Pause on focus loss (`document.hidden` / `NOTIFICATION_APPLICATION_FOCUS_OUT`)
 - [ ] No `console.error` in the playtest report
+- [ ] Desktop: opens **fullscreen** by default, with window mode and resolution settings
+      (`godot-field-notes/references/display-settings.md`)
+- [ ] README/LEEME inside the zip with the SmartScreen and Gatekeeper first-launch steps
+- [ ] Trailer, landing page and store screenshots are spoiler-free (`game-trailer` Rule 0)
+- [ ] GitHub release and itch carry the same version
+- [ ] Unused and non-redistributable assets are excluded from the export (`game-assets audit`).
+      THE ONES shipped an unused 12 MB model and a "Free Standard" one by accident
+- [ ] The user has **listened** to the build. You can't hear audio, so say so
+- [ ] Generated audio: the provider plan allows commercial use, and AI use is declared on the store page
