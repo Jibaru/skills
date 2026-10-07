@@ -37,7 +37,11 @@ community packs.
 | `gamedev` | Runs the pipeline (GDD → assets → build → playtest → ship), picks the engine (Phaser, Three.js, Godot 4), and provides the scaffolds and shipping guide (Tauri, Godot export, itch.io) |
 | `game-design-doc` | Interviews you in rounds until the design is settled, then writes `GDD.md` |
 | `game-assets` | Searches and downloads CC0/CC-BY assets from Poly Haven, ambientCG, Kenney, game-icons.net, Poly Pizza and Freesound, keeps `CREDITS.md` up to date, and synthesizes retro sound effects offline |
-| `game-playtest` | Plays the game with scripted input (Playwright for web, a harness for Godot), takes screenshots, asserts on game state, and catches errors |
+| `game-playtest` | Plays the game with scripted input (Playwright for web, a harness for Godot), takes screenshots, asserts on game state, and catches errors. Godot side: one-process lock, suite summaries, `gd`/`until` steps |
+| `godot-field-notes` | Fixes for Godot 4 from shipping a real game: shader colour spaces, render-to-texture, retargeting, GDScript inference errors, exporting from Windows (including a free ad-hoc macOS build), display settings, Windows pitfalls |
+| `game-trailer` | Spoiler-free trailers: shot lists, Godot Movie Maker recording, contact-sheet review, encoding |
+| `game-landing-page` | Minimal trailer-first landing page with absolute OG meta, stable download links, a checker script, and a GitHub Pages custom domain |
+| `elevenlabs-game-audio` | Voices, Voice Design and music with ElevenLabs. Keys stay out of commands, and output is verified by numbers because the agent can't listen |
 
 Install the kit and the community packs:
 
