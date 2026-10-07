@@ -20,7 +20,7 @@ YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-OWN_SKILLS=(gamedev game-design-doc game-assets game-playtest)
+OWN_SKILLS=(gamedev game-design-doc game-assets game-playtest game-trailer game-landing-page godot-field-notes elevenlabs-game-audio)
 
 # gamedev-skills/awesome-gamedev-agent-skills: engine-agnostic design, genres, jams, publishing.
 # Left out on purpose: router and create-game-assets (overlap gamedev/game-assets),

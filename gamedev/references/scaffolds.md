@@ -203,25 +203,160 @@ window/size/viewport_height=360
 window/stretch/mode="canvas_items"
 ```
 
-Define input actions in the editor (Project → Project Settings → Input Map) or
-in `project.godot`'s `[input]` section. Ask the Godot skill
-(`godot-gdscript`) for the serialized `InputEventKey` format if you write it by hand.
-
-`main.tscn` root script (`main.gd`): variables on this node are what
-playtest `expect` expressions see.
+**Register the Input Map from code** instead of hand-writing the serialized `[input]`
+section, so keyboard and gamepad live in one readable place. This is THE ONES' `scripts/inputs.gd`
+(abridged list of actions, real helpers). Call `Inputs.register()` first thing in the main scene's `_ready()`:
 
 ```gdscript
-extends Node2D
+class_name Inputs
+extends RefCounted
 
-var score := 0
-var hp := 3
-@onready var player: CharacterBody2D = $Player
+static var _done := false
+
+
+static func register() -> void:
+	if _done:
+		return
+	_done = true
+	_key("move_forward", KEY_W)
+	_axis("move_forward", JOY_AXIS_LEFT_Y, -1.0)
+	_key("interact", KEY_E)
+	_button("interact", JOY_BUTTON_A)
+	_key("pause", KEY_ESCAPE)
+	_button("pause", JOY_BUTTON_START)
+
+
+static func _ensure(action: String) -> void:
+	if not InputMap.has_action(action):
+		InputMap.add_action(action, 0.2)
+
+
+static func _key(action: String, code: Key) -> void:
+	_ensure(action)
+	var ev := InputEventKey.new()
+	ev.physical_keycode = code
+	InputMap.action_add_event(action, ev)
+
+
+static func _axis(action: String, axis: JoyAxis, value: float) -> void:
+	_ensure(action)
+	var ev := InputEventJoypadMotion.new()
+	ev.axis = axis
+	ev.axis_value = value
+	InputMap.action_add_event(action, ev)
+
+
+static func _button(action: String, button: JoyButton) -> void:
+	_ensure(action)
+	var ev := InputEventJoypadButton.new()
+	ev.button_index = button
+	InputMap.action_add_event(action, ev)
 ```
 
-Import new assets and validate the project headless:
+### The main scene: a mode, plus test hooks
+
+`main.tscn` has a root script (`main.gd`). Variables on this node are what playtest `expect`
+expressions see. Give it an exported **mode**, so every test and every preview can start
+directly where it needs to, instead of booting the story:
+
+```gdscript
+extends Node3D
+
+@export var mode := "story"   # "story", "explore", "day1", "night2", …
+var score := 0
+@onready var player: CharacterBody3D = $Player
+```
+
+**One-node entry scenes per mode.** Each test points at its own scene. THE ONES ended up with
+`day1…day4.tscn`, `night2…night4.tscn`, `explore.tscn` and `intro_test.tscn`. When the story gained a
+prologue, the one test that pointed at the main scene broke (the player was frozen in the intro).
+Only intro and menu tests should start from the story entry.
+
+```ini
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+mode = "day2"
+```
+
+**Debug hooks on the main root.** They're safe to ship, and only playtests and trailers call them.
+These are THE ONES' `scripts/main.gd` (lines 161-190 and 263-270, comments translated from Spanish):
+
+```gdscript
+## Debug / playtest: place an actor in the world.
+func spawn_debug(kind: String, pos: Vector3, yaw := 0.0) -> Node3D:
+	var n: Node3D
+	match kind:
+		"gray":
+			n = Gray.new()
+		"cultist":
+			n = Cultist.new()
+		_:
+			n = Kuro.new()
+	add_child(n)
+	n.global_position = pos
+	n.rotation.y = yaw
+	return n
+
+
+func look_from(pos: Vector3, yaw: float, pitch := 0.0) -> void:
+	player.global_position = pos
+	player.rotation.y = yaw
+	player.head.rotation.x = pitch
+
+
+## Debug/playtest: put the camera `dist` metres from a node, looking at it from angle `yaw`.
+## Prefer this to hand-tuned look_from(): hand-aimed cameras caused most false FAILs.
+func frame_node(n: Node3D, dist: float, yaw: float, h := 1.3) -> void:
+	var c := n.global_position
+	var p := c + Vector3(sin(yaw), 0, cos(yaw)) * dist
+	player.global_position = Vector3(p.x, c.y, p.z)
+	player.look_at(Vector3(c.x, player.global_position.y, c.z))
+	player.head.rotation.x = atan2(h - 1.6, dist)   # 1.6 = eye height
+
+
+func set_auto_restart(on: bool) -> void:
+	GameState.auto_restart = on   # tests turn this off so a death doesn't reload the scene under them
+```
+
+Add time-skip hooks for long modes (a 20-minute night tested in about 4 minutes), and a `stats()`
+hook for performance checks. Wait at least 1.5 s after a change, because FPS is a one-second average:
+
+```gdscript
+func stats() -> String:
+	return "fps=%d prims=%d draws=%d vram=%dMB" % [
+		Engine.get_frames_per_second(),
+		Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME),
+		Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME),
+		Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED) / 1048576]
+```
+
+**Keep tests out of the player's save.** In THE ONES, story code called `SaveGame.save()` during tests and
+wrote into the developer's real `user://save.cfg`. The `game-playtest` harness sets
+`Engine.set_meta("playtest", true)`, so the game can branch on it:
+
+```gdscript
+static func save_path() -> String:
+	return "user://playtest_save.cfg" if Engine.has_meta("playtest") else "user://save.cfg"
+```
+
+Code that touches the window (fullscreen, resolution) must also stand down under test and while
+recording a trailer. See `godot-field-notes/references/display-settings.md`.
+
+### Housekeeping
 
 ```bash
-godot --headless --path . --import
+godot --headless --path . --import     # after adding assets or editing .import files
 ```
 
-`.gitignore`: `.godot/`, `playtest/screenshots/`, `export/`
+- Put an empty `.gdignore` in every folder of non-game files under the project (`playtest/screenshots/`,
+  `assets/source/`, `build/`), or Godot imports every PNG in it.
+- Textures used by code-built materials need fixed `.import` files, because a headless import never
+  runs the editor's detect-3D pass: `game-assets/scripts/fix_texture_imports.mjs`.
+- On Windows: use the `*_console.exe` Godot build from `tools/` (gitignored), and run one Godot process
+  at a time. More in `godot-field-notes/references/windows-agent.md`.
+
+`.gitignore`: `.godot/`, `playtest/screenshots/`, `playtest/summary.txt`, `export/`, `build/`, `tools/`
