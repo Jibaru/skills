@@ -1,0 +1,89 @@
+<!doctype html>
+<!--
+  Minimal game landing page: full-bleed muted trailer, title, download buttons, one small line.
+  Generalized from https://theones.crafter.run (repo crafter-games/the-ones-game).
+  Replace every double-brace placeholder (scripts/check-landing.mjs lists any left). Media expected in media/:
+    trailer.mp4 (h264 + faststart), poster.jpg (non-spoiler frame), og.jpg (1200x630), icon.png
+  Every og:/twitter: URL must be ABSOLUTE: WhatsApp, X, Slack and Discord ignore relative images.
+-->
+<html lang="{{LANG}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{GAME}} — {{SUBTITLE}}</title>
+<meta name="description" content="{{HOOK}}">
+<link rel="canonical" href="https://{{DOMAIN}}/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://{{DOMAIN}}/">
+<meta property="og:site_name" content="{{GAME}}">
+<meta property="og:title" content="{{GAME}} — {{SUBTITLE}}">
+<meta property="og:description" content="{{HOOK}} {{GENRE_LINE}}">
+<meta property="og:image" content="https://{{DOMAIN}}/media/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{OG_ALT}}">
+<meta property="og:video" content="https://{{DOMAIN}}/media/trailer.mp4">
+<meta property="og:video:type" content="video/mp4">
+<meta property="og:video:width" content="{{VIDEO_W}}">
+<meta property="og:video:height" content="{{VIDEO_H}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{GAME}} — {{SUBTITLE}}">
+<meta name="twitter:description" content="{{HOOK}}">
+<meta name="twitter:image" content="https://{{DOMAIN}}/media/og.jpg">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="media/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@800&family=Courier+Prime&display=swap" rel="stylesheet">
+<style>
+:root { --paper: #e6dfcf; --dim: #8a8273; --red: #a3301f; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #000; color: var(--paper); }
+body { font: 16px/1.5 "Courier Prime", ui-monospace, monospace; overflow: hidden; }
+video, .poster { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.55) saturate(.8); }
+.veil { position: fixed; inset: 0; background: radial-gradient(ellipse at center, transparent 0, rgba(0,0,0,.35) 55%, #000 100%); }
+main { position: relative; height: 100%; display: grid; place-items: center; text-align: center; padding: 20px; }
+h1 { font: 800 clamp(48px, 10vw, 128px)/1 "Shippori Mincho", serif; letter-spacing: .08em; margin: 0; }
+.sub { font: 800 clamp(18px, 2.4vw, 26px)/1 "Shippori Mincho", serif; color: var(--red); letter-spacing: .6em; padding-left: .6em; margin: 18px 0 44px; }
+.dls { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+/* Never upper-case platform names with CSS: it turns "macOS" into "MACOS". */
+a.dl { display: inline-block; min-width: 170px; padding: 14px 30px; border: 1px solid rgba(230,223,207,.5); color: var(--paper); text-decoration: none; letter-spacing: .18em; font-size: 15px; font-weight: 700; background: rgba(0,0,0,.35); transition: background .3s, border-color .3s; }
+a.dl:hover { background: var(--red); border-color: var(--red); }
+.small { margin-top: 18px; font-size: 12px; color: var(--dim); letter-spacing: .08em; }
+.small a { color: var(--dim); }
+.by { position: fixed; left: 18px; bottom: 16px; margin: 0; font-size: 12px; letter-spacing: .15em; color: var(--dim); }
+.by a { color: var(--paper); text-decoration: none; border-bottom: 1px solid rgba(230,223,207,.35); }
+.by a:hover { color: #fff; border-color: var(--red); }
+button.sound { position: fixed; right: 18px; bottom: 16px; background: none; border: 0; color: var(--dim); font: inherit; font-size: 12px; letter-spacing: .15em; cursor: pointer; }
+@media (max-width: 520px) {
+  .by, button.sound { bottom: 12px; font-size: 11px; }
+}
+</style>
+</head>
+<body>
+<img class="poster" src="media/poster.jpg" alt="" aria-hidden="true">
+<video id="v" autoplay muted loop playsinline preload="auto" poster="media/poster.jpg">
+  <source src="media/trailer.mp4" type="video/mp4">
+</video>
+<div class="veil"></div>
+<main>
+  <div>
+    <h1>{{GAME}}</h1>
+    <p class="sub">{{SUBTITLE}}</p>
+    <div class="dls">
+      <!-- releases/latest/download/<exact asset name>: keep asset names constant across versions -->
+      <a class="dl" href="https://github.com/{{ORG}}/{{REPO}}/releases/latest/download/{{ASSET_WIN}}">Windows</a>
+      <a class="dl" href="https://github.com/{{ORG}}/{{REPO}}/releases/latest/download/{{ASSET_MAC}}">macOS</a>
+    </div>
+    <p class="small">{{FREE_LABEL}} · <a href="https://{{ITCH_USER}}.itch.io/{{ITCH_SLUG}}">itch.io</a> · <a href="https://github.com/{{ORG}}/{{REPO}}/blob/main/CREDITS.md">{{CREDITS_LABEL}}</a></p>
+  </div>
+</main>
+<p class="by">{{MADE_BY_LABEL}} <a href="https://github.com/{{AUTHOR}}">{{AUTHOR}}</a></p>
+<button class="sound" id="s">{{SOUND_ON}}</button>
+<script>
+  // Sound toggle restarts the trailer so the first unmuted second is the cold open, not mid-shot.
+  const v = document.getElementById("v"), s = document.getElementById("s");
+  s.onclick = () => { v.muted = !v.muted; if (!v.muted) { v.currentTime = 0; v.play(); } s.textContent = v.muted ? "{{SOUND_ON}}" : "{{SOUND_OFF}}"; };
+</script>
+</body>
+</html>
