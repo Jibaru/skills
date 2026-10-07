@@ -10,8 +10,11 @@
  *   node scripts/find-control-bytes.mjs src scripts
  *   node scripts/find-control-bytes.mjs path/to/file.ts
  *
- * Tab (0x09), LF (0x0A) and CR (0x0D) are allowed; everything else below 0x20 is reported with
- * its line, column and hex value. Exit code 1 when anything is found.
+ * Tab (0x09), LF (0x0A) and CR (0x0D) are allowed. ESC (0x1B) is listed separately as "probably
+ * intentional": CLI code writes ANSI colours as a raw ESC on purpose (`const GREEN = "\x1b[32m"`
+ * saved through an editor that kept the byte), and mixing those into the findings turns the sweep
+ * into noise people learn to ignore, which is how a sweep stops working. Every other byte below
+ * 0x20 is a finding, with its line, column and hex value. Exit code 1 only for findings.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -19,6 +22,7 @@ import path from "node:path";
 const EXTENSIONS = new Set([".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".json", ".css", ".md", ".mdx", ".py", ".go", ".sql", ".sh", ".yml", ".yaml"]);
 const SKIP = new Set(["node_modules", ".git", ".next", "dist", "build", ".turbo", ".source"]);
 const ALLOWED = new Set([0x09, 0x0a, 0x0d]);
+const PROBABLY_INTENTIONAL = new Set([0x1b]);
 
 const targets = process.argv.slice(2);
 if (targets.length === 0) {
@@ -37,7 +41,8 @@ const walk = (p) => {
 };
 for (const t of targets) walk(t);
 
-let hits = 0;
+const findings = [];
+const intentional = [];
 for (const file of files) {
   const bytes = fs.readFileSync(file);
   let line = 1;
@@ -49,13 +54,22 @@ for (const file of files) {
       continue;
     }
     if (byte < 0x20 && !ALLOWED.has(byte)) {
-      hits += 1;
-      const hex = byte.toString(16).padStart(2, "0");
-      console.log(`${file}:${line}:${column}  0x${hex}`);
+      const entry = `${file}:${line}:${column}  0x${byte.toString(16).padStart(2, "0")}`;
+      (PROBABLY_INTENTIONAL.has(byte) ? intentional : findings).push(entry);
     }
     column += 1;
   }
 }
 
-console.log(hits ? `\n${hits} control byte(s) found` : `ok: ${files.length} file(s) clean`);
-process.exit(hits ? 1 : 0);
+for (const entry of findings) console.log(entry);
+if (intentional.length) {
+  console.log(`\nprobably intentional (ESC, usually ANSI colours), not counted:`);
+  for (const entry of intentional) console.log(`  ${entry}`);
+}
+
+console.log(
+  findings.length
+    ? `\n${findings.length} control byte(s) found`
+    : `${intentional.length ? "\n" : ""}ok: ${files.length} file(s) clean`,
+);
+process.exit(findings.length ? 1 : 0);

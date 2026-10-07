@@ -49,7 +49,10 @@ this repo. It's mechanical, so the fix is a fixed procedure rather than more car
    # src/x.ts:95:17  0x08      ← corruption: file, line, column, byte
    ```
 
-   Any hit in source code is corruption until proven otherwise. Prefer the script to
+   Any hit in source code is corruption until proven otherwise. ESC (0x1B) is listed
+   separately as "probably intentional" and doesn't fail the run: CLI code keeps raw ANSI
+   colour escapes on purpose (whatsapp-bot-sst has 11 in `scripts/checks/shared.ts` and
+   `scripts/setup-env.mjs`). A sweep that flags those trains people to ignore it. Prefer the script to
    `grep -P '[\x00-\x08…]'`: in some locales (Git Bash on Windows among them) `grep -P` refuses
    to run, and a fallback that builds the pattern with `$(printf …)` can end up empty and match
    **every** file. A sweep that reports everything is as useless as one that reports nothing.
