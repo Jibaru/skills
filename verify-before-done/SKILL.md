@@ -34,6 +34,20 @@ Before writing "reproduced", "fixed" or "verified", answer these in your report:
 
 When you can't reach the real path, **say so in the report** instead of calling it verified.
 
+**Read the check's own output before trusting its result.** While writing these lessons, the same
+session reported a repo "clean" of control bytes based on:
+
+```
+$ grep -cP '\x08' src/modules/library/search.ts || echo "0"
+grep: -P supports only unibyte and UTF-8 locales
+0
+```
+
+The `0` came from `|| echo`, not from grep. grep never ran. A fallback that prints the
+"good" value turns every failure of the check into a pass. Don't write `|| echo 0` or `|| true`
+after a check whose result you'll report. Let it fail, read stderr, and fix the tool first. The
+locale-proof replacement is `shell-safe-patching/scripts/find-control-bytes.mjs`.
+
 ### Case A: the smoke test resolved a different copy (commit `8209c17`)
 
 Chromium was added to the Docker image. The smoke test did `require("playwright-core")` and
