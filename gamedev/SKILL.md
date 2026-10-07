@@ -35,6 +35,10 @@ jam: a 15-minute interview saves hours of building the wrong thing. If the user
 refuses, write a 10-line GDD yourself (pitch, engine, core loop, controls,
 fail/win, M1) and confirm it in one message.
 
+Horror, mystery or other narrative games: `game-design-doc` reads its
+`references/horror-design.md`. In those genres, ambiguity is the product, and that
+shapes the trailer and the store page as much as the game.
+
 ## Stage 2: Pick the engine
 
 The GDD records the choice. If it's still open, recommend from this table:
@@ -54,10 +58,17 @@ desktop" alone is not a reason to leave Phaser or Three.js.
 
 1. Use **`game-assets`** to fetch the GDD's asset table and fill in the Source
    column. Missing art becomes a code-drawn placeholder, never a blocker.
+   Voices and music come from **`elevenlabs-game-audio`** when the free sources
+   don't cover them.
 2. Scaffold from `references/scaffolds.md`. Every scaffold exposes a
    `window.__TEST__` test hook, or root-node variables in Godot, so
-   `game-playtest` can assert on state from the first commit.
-3. Add `playtest/screenshots/` to `.gitignore`.
+   `game-playtest` can assert on state from the first commit. The Godot scaffold
+   also has direct-start entry scenes and debug hooks. Add them from day one,
+   because hand-aimed test cameras were the most common cause of false FAILs.
+3. Add `playtest/screenshots/` and `playtest/summary.txt` to `.gitignore`.
+4. On Windows, read `godot-field-notes/references/windows-agent.md` once before the
+   first build. Python store stubs, `/tmp` paths, heredocs and zip handling each cost
+   hours in a real project.
 
 ## Stage 4: Build, one milestone at a time
 
@@ -69,7 +80,8 @@ installed engine skills. Check what's available and prefer these:
 | Phaser API | `scenes`, `sprites-and-images`, `physics-arcade`, `tilemaps`, `input-keyboard-mouse-touch`, `loading-assets`, `particles`, `tweens`, `cameras`, `v4-new-features` (official `phaserjs/phaser` pack) |
 | Three.js game structure | `threejs-game-director`, `threejs-gameplay-systems`, `threejs-aaa-graphics-builder`, `threejs-game-ui-designer`, `threejs-debug-profiler` |
 | Three.js API | `threejs-fundamentals`, `threejs-loaders`, `threejs-materials`, `threejs-lighting`, `threejs-animation`, `threejs-shaders`, `threejs-postprocessing` |
-| Godot | `godot-gdscript`, `godot-nodes-scenes`, `godot-2d-movement`, `godot-3d-essentials`, `godot-physics`, `godot-tilemap`, `godot-ui-control`, `godot-signals-groups`, `godot-animation`, `godot-export` |
+| Godot | `godot-gdscript`, `godot-nodes-scenes`, `godot-2d-movement`, `godot-3d-essentials`, `godot-physics`, `godot-tilemap`, `godot-ui-control`, `godot-signals-groups`, `godot-animation`, `godot-shaders`, `godot-audio`, `godot-resources`, `godot-multiplayer`, `godot-export` |
+| Godot, from shipping a real game | **`godot-field-notes`** (ours): `source_color` linear-space thresholds, render-to-texture tricks, retargeting, GDScript inference errors, export from Windows (incl. macOS ad-hoc), display settings. It corrects a few statements in the pack above. **Writing any `.gdshader` → read its shaders reference first.** |
 | Any engine | `game-feel`, `level-design`, `camera-systems`, `input-systems`, `game-ui-ux`, `audio-design`, `save-systems`, `procedural-gen`, `physics-tuning`, `performance-optimization`, `game-ai` |
 | Genre conventions | `platformer`, `roguelike`, `rpg`, `puzzle`, `fps-shooter`, `tower-defense`, `card-game`, `survival-crafting`, `visual-novel` |
 | Jams | `game-jam`, `prototype-fast` |
@@ -92,6 +104,17 @@ milestone is done when the run passes and the screenshots match what the GDD
 milestone describes. Tell the user which milestone is done, and give the
 screenshot paths.
 
+- **Keep a suite.** Put the one-line suite command in the project README
+  ("Playtests" section). Run it sequentially in the background before any commit
+  or release that touches shared systems: intro, save, input, UI theme. Adding an
+  intro once broke a story test that pointed at the main scene.
+- **One Godot at a time**, across every agent. Two instances ran a real machine out
+  of memory and killed a background suite.
+- **When delegating to subagents**, tell them: one Godot at a time, no full-suite
+  runs, scratch files in the scratchpad (never the project root, where Godot imports
+  them), don't commit. A script error in a file you didn't touch may be a subagent
+  mid-edit, so check before "fixing" it.
+
 ## Stage 6: Ship
 
 See `references/ship.md` for the commands. In short:
@@ -102,9 +125,18 @@ See `references/ship.md` for the commands. In short:
 - **Desktop from a web game**: Tauri 2 wraps `dist/` into a native app
   (a few MB, uses the system webview).
 - **Desktop from Godot**: export presets plus the export templates;
-  `godot --headless --export-release`.
-- **Stores**: the `itch-publish` and `steam-publish` skills. `CREDITS.md` ships
+  `godot --headless --export-release`. Windows and a free, ad-hoc-signed universal
+  macOS build can both be made from Windows (`godot-field-notes/references/export.md`).
+- **GitHub release**: the version bump, export, zip and `gh release create` sequence
+  is in `references/ship.md`. Keep asset names constant so
+  `releases/latest/download/<name>` links never change.
+- **itch.io**: `references/itch.md` covers the agent workflow and the failures that
+  really happen (interactive login, unverified email, transient HTTP 525). The
+  `itch-publish` and `steam-publish` skills have store details. `CREDITS.md` ships
   with the game if any asset needs attribution.
+- **Trailer**: **`game-trailer`**, spoiler-free by default for narrative games.
+- **Landing page**: **`game-landing-page`**, minimal by default, with absolute OG URLs
+  and a GitHub Pages custom domain.
 - **Icons**: the `icongen` skill for the favicon and app icons (Tauri needs a
   1024×1024 PNG source).
 

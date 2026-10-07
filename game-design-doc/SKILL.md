@@ -82,6 +82,9 @@ Every one of these must be settled or explicitly cut before the GDD is written:
 - **Assets**: which free packs fit the style. Check with `game-assets`
   search before recommending a pack.
 - **Out of scope**: things the user mentioned that won't be in v1.
+- **Genre-specific branches**: for horror or mystery, read `references/horror-design.md`
+  and add its interview questions: the core question nobody answers, the spoiler list, the diegetic
+  layers, the number of nights, the setting's era and culture, and how each threat moves.
 
 Push back on scope. A jam game has **one** core mechanic done well. If the
 answers add up to more than the scope allows, say so and propose what to cut.
