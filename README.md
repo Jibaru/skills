@@ -128,3 +128,52 @@ each key (`--probar`); searches enable keyed sources automatically and report
 what was skipped.
 
 Start with: *"quiero empezar mi tesis"*.
+
+## AWS review kit
+
+Expert reviewers for code and infrastructure on AWS. They read your code, IaC and diffs and
+report bugs, security holes, cost waste, reliability risks and places where things could be
+simpler or easier to read. Every finding cites the file and line and links the official doc it
+relies on. Reviews are static (files, diffs, `terraform plan` / `cdk diff` / `sst diff`) and
+never touch an AWS account. They cover Terraform/OpenTofu, CDK (TypeScript) and SST v3, and
+application code in TypeScript (AWS SDK v3) and Go (aws-sdk-go-v2).
+
+| Skill | What it does |
+| --- | --- |
+| `aws-review` | Orchestrator: works out which experts apply to the change, runs them in parallel, merges and de-duplicates their findings, surfaces trade-offs, ranks by severity |
+| `aws-compute` | Lambda, ECS/Fargate, EC2, App Runner |
+| `aws-data` | DynamoDB, RDS/Aurora, ElastiCache |
+| `aws-storage` | S3, CloudFront |
+| `aws-messaging` | SQS, SNS, EventBridge, Kinesis, MSK, Step Functions |
+| `aws-networking` | VPC, NAT, ALB/NLB, API Gateway, Route 53 |
+| `aws-iac` | Terraform, CDK and SST pitfalls: state, drift, replacements, removal policies |
+| `aws-security` | IAM least privilege, KMS, secrets, public exposure |
+| `aws-cost` | FinOps: the usual money leaks, with the savings worked out |
+| `aws-observability` | Alarms, log retention, structured logs, metrics, tracing |
+| `aws-refresh` | Re-checks every rule against the official docs and updates whatever changed |
+
+Each rule in `aws-*/references/` carries its official source and a `Last verified` date, and
+`references/sources.md` keeps every link in case a page moves. When a review relies on a rule
+older than 120 days, it says so and confirms prices and limits live before quoting them. Run
+`/aws-refresh` to update the rules. Fixtures with planted issues for each expert live in
+`aws-review/evals/` (see its README) and are not installed.
+
+Install:
+
+```powershell
+.\install-aws.ps1
+```
+
+```bash
+./install-aws.sh
+./install-aws.sh --dry-run
+```
+
+Optional: connect the [AWS Knowledge MCP server](https://awslabs.github.io/mcp/servers/aws-knowledge-mcp-server)
+(free, no AWS account needed) so reviewers can check prices and limits live:
+
+```bash
+claude mcp add --transport http aws-knowledge https://knowledge-mcp.global.api.aws
+```
+
+Start with: *"review my AWS code"* or *"revisa esta infra de AWS"*.

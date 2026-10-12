@@ -1,0 +1,25 @@
+name: deploy
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: sst-prod
+  cancel-in-progress: false
+
+jobs:
+  diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npx sst diff --stage prod
+
+  deploy:
+    needs: diff
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npx sst deploy --stage prod
