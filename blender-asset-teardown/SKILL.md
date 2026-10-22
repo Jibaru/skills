@@ -25,7 +25,7 @@ blender --background --python scripts/inventory.py -- model.glb --top 40 --json 
 ```
 
 `teardown_lib.flatten()` bakes each object's `matrix_world` into a **copy** of its mesh, then resets the
-transform and drops the empties (the build does the same at `build_transit_van.py:161-171`). Imported files
+transform and drops the empties (the build does the same at `build_transit_van.py:141-151`). Imported files
 often share mesh data between objects, so transforming a shared mesh in place would move every instance.
 After that, every bbox is in world space and comparable. Real output on the Transit:
 
@@ -61,7 +61,7 @@ for every later step. Clerk Van uses **front = −Y** in Blender (which becomes 
 ## 3. Delete clutter
 
 Delete by name for the parts you identified, and by bbox predicate for whole classes. From
-`build_transit_van.py:177-187`: a `ROOF_CLUTTER` set of node names (light bar, beacons, clearance lamps,
+`build_transit_van.py:157-167`: a `ROOF_CLUTTER` set of node names (light bar, beacons, clearance lamps,
 roof rails, chrome lettering), plus "anything whose centre is inside the cargo box and smaller than it":
 
 ```python
@@ -74,7 +74,7 @@ if ob.name in ROOF_CLUTTER or inside:
 
 The asset's sliding door was modelled **open**: slid back, raised, with an open window and step well.
 Three attempts to move it and rebuild its skin all "still looked open" to the user. What worked was
-deleting it and **mirroring the opposite flank** over the opening (`build_transit_van.py:255-305`):
+deleting it and **mirroring the opposite flank** over the opening (`build_transit_van.py:235-285`):
 
 1. Find the opening from the geometry. Sort the y of outward-facing face centres on that flank, and the
    largest gap is the doorway (`_gap = max(zip(_ys, _ys[1:]), key=lambda t: t[1] - t[0])`).
@@ -83,7 +83,7 @@ deleting it and **mirroring the opposite flank** over the opening (`build_transi
 3. Do the same for every layer in that window (body skin and the lower cladding).
 
 The result is one seam, flush. **When a part is wrong and the object is symmetric, copy the correct twin.**
-The same move rebuilt the passenger window surround from the driver's (`build_transit_van.py:493-510`).
+The same move rebuilt the passenger window surround from the driver's (`build_transit_van.py:473-490`).
 
 ## 5. Holes left by deletions: find them with rays, patch only the hole
 
@@ -94,14 +94,14 @@ blender --background --python scripts/find_holes.py -- model.glb --object 3DGeom
 ```
 
 That's the light-bar mount cut-out in the roof, matching the extent recorded in the build
-(`build_transit_van.py:241`: "spans y 0.03..0.48, x -0.32..0.08 (ray-cast)"). **`--near` is essential
+(`build_transit_van.py:221`: "spans y 0.03..0.48, x -0.32..0.08 (ray-cast)"). **`--near` is essential
 on a closed body:** a ray that falls through a roof hole still hits the floor inside, so without a "deeper
 than the roof counts as a miss" threshold the scan reports zero holes. That happened on the first run of
 this script.
 
 Patch **only** the miss region. A full-width plate "looked like a slab" from low angles. The build samples
 the roof height from upward face centres in thin x bins, sits the patch 1 cm **under the rib crests** so it
-never pokes through, and covers just the strip (`build_transit_van.py:232-253`):
+never pokes through, and covers just the strip (`build_transit_van.py:212-233`):
 
 ```python
 for x in [i / 10 for i in range(-7, 8)]:
@@ -118,7 +118,7 @@ follow a surface. For watertight *printing*, see `print-ready-export`.
 
 Faces of one mesh often belong to separate parts. The passenger mirror housing was inside the body mesh.
 `teardown_lib.separate(ob, name, pred)` moves the faces whose **world** centre satisfies a predicate into a
-new object (`build_transit_van.py:457`):
+new object (`build_transit_van.py:437`):
 
 ```python
 mir_l = separate(body, "Mirror_L_housing", lambda c: c.x > 1.02 and -1.95 < c.y < -0.75 and 0.85 < c.z < 1.65)
@@ -131,7 +131,7 @@ The new object then gets picked up by the door's member predicate and moves with
 
 glTF import splits vertices at every UV and normal seam, so edge connectivity is meaningless and "select
 linked" selects single triangles. To find logical pieces **without modifying the mesh**, union-find faces
-that share a rounded vertex **position** (`teardown_lib.islands`, from `build_transit_van.py:534-547`):
+that share a rounded vertex **position** (`teardown_lib.islands`, from `build_transit_van.py:514-527`):
 
 ```bash
 blender --background --python scripts/inventory.py -- export/clerk_van.glb --top 5 --islands Body
@@ -150,7 +150,7 @@ For **geometry** operations (solidify, booleans, remesh), weld first:
 
 - Game meshes often include **inward copies** of panels (door inner skins). After repainting, those show
   the livery inside the car. The build reassigns any livery face whose normal points toward the vehicle's
-  centre line to a near-black `DoorInner` material (`inner_faces_to_interior`, `build_transit_van.py:315-334`).
+  centre line to a near-black `DoorInner` material (`inner_faces_to_interior`, `build_transit_van.py:295-314`).
 - To drop interior objects (for a print), sample up to 300 faces per object and cast rays from 1 cm off
   each face in 11 directions. If any ray escapes without a hit, the object is exterior. Add a
   material-name filter (`interior`, `seat_fabric`, `carpet`, `dash`). That one lives in

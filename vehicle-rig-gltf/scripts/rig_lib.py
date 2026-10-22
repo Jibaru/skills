@@ -26,7 +26,7 @@ def parent(child, par, keep=True):
     depsgraph updates, and a parent inverse computed from a stale matrix leaves children offset.
     keep=True stores par's inverse so the child keeps its world placement (build_transit_van.py:34-37).
     For a child that should sit exactly at the pivot, set child.location = (0,0,0) and child.parent = par
-    instead (that is how the front wheels hang from Steer_L/R, build_transit_van.py:593).
+    instead (that is how the front wheels hang from Steer_L/R, build_transit_van.py:573).
     """
     bpy.context.view_layer.update()
     child.parent = par

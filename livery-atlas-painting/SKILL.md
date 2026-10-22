@@ -99,8 +99,8 @@ else:                                                     # fallback: dominant n
 
 `c` is the face centre in world space (`mw @ poly.center`), and `n` is the world normal
 (`mw.to_3x3().inverted().transposed() @ poly.normal`). For side faces, which side panel to use is also decided by
-position (`c.x > 0`), not by the normal. `build_transit_van.py:133-151` still holds the old normal-only projection,
-unreachable after a `continue`; it's what this replaced.
+position (`c.x > 0`), not by the normal. This replaced an older normal-only projection, which sat unreachable after
+a `continue` until clerk-van `b54a0d6` deleted it. The rebuilt GLB was byte-identical, which proves it was dead.
 
 `scripts/project_uv.py` exposes the thresholds as a `Zones` dataclass (`Zones.from_mesh(body)` reads roof and
 nose/tail from the bounding box). **Tested:** run on the shipped `export/clerk_van.blend` Body, it reproduces the
@@ -114,7 +114,7 @@ whole shell.
 
 Game meshes carry inward-facing copies (the inner door skins). With the livery on them, the logo shows inside the
 cab. The build sends livery faces whose normal points **into** the body to a near-black `DoorInner` material
-(`build_transit_van.py:311-334`):
+(`build_transit_van.py:291-314`):
 
 ```python
 M_INNER = new_mat("DoorInner", (0.03, 0.03, 0.034), rough=0.85)
@@ -182,9 +182,11 @@ python scripts/verify_qr.py textures/panel_side_left_transit.png textures/panel_
 ```
 
 **Tested:** all three regenerated panels decode inverted, and **none** decode without the inversion, so the step is
-required, not cosmetic. The script also tries 0.5× scale. `README.md:138-139` says the codes "are verified to
-decode (OpenCV) … every time the atlas is generated", but no committed code does that: `gen_textures.py` doesn't
-import cv2. Run `verify_qr.py` right after the generator, or call it at the end of your own generator.
+required, not cosmetic. The script also tries 0.5× scale. Make verification part of generation, not a separate
+habit. clerk-van's README claimed the codes were checked on every generation before any code did it. Since
+`b54a0d6`, `gen_textures.py` calls `tools/verify_qr.py` after writing the atlas: inverted panels, scales
+1.0/0.5/0.75, exit 1 on failure, and a notice instead of a failure when cv2 is missing. Do the same at the end of
+your own generator.
 
 ## Regenerate, and check it's deterministic
 
@@ -203,7 +205,7 @@ printable model (see `print-ready-export`).
 ## Corrections to the source notes
 
 Where the session notes this skill was built from disagree with the repo, the repo wins:
-- Glass alpha is **0.45** (`build_transit_van.py:335`), not 0.25.
+- Glass alpha is **0.45** (`build_transit_van.py:315`), not 0.25.
 - The QR is white modules on **transparent**, not "white on dark". The dark comes from the panel underneath.
 - The hood rule is `c.y < YF + 0.9 and c.z < 1.45 and n.z > 0.3`. The front rule `c.y < YF + 0.7` comes after it.
 - The hood-logo fix moved the lockup **forward** (`f0e9944`), not lower.
