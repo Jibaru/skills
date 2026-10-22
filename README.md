@@ -82,6 +82,24 @@ Everything works without them. Set these only when you want more sources:
 
 Start with: *"I want to make a game"*.
 
+## Blender 3D kit
+
+From building [Clerk Van](https://github.com/Jibaru/clerk-van): a real CC-BY vehicle asset, repainted
+with a custom livery, rigged for Three.js and Godot, rendered on a turntable, and exported as a
+printable STL with raised lettering. Everything runs headless in Blender 4.2. `install.sh` /
+`install.ps1` installs these skills along with the rest.
+
+| Skill | What it does |
+| --- | --- |
+| `blender-3d-pipeline` | Entry point: where to source a model, when to sculpt, Blender 4.2 and Windows gotchas, and which skill handles each step |
+| `blender-asset-teardown` | Inventory a downloaded GLB, scale it to metres, remove clutter, mirror a correct part instead of fixing a broken one, find holes and mesh islands |
+| `vehicle-rig-gltf` | Pivots, NLA clips and KHR lights that export cleanly to glTF, plus a script that checks the node and clip contract in a GLB |
+| `livery-atlas-painting` | Livery panels drawn in vehicle metres from a profile JSON, box projection by face position, official logos, QR codes verified to decode |
+| `blender-render-review` | Lime studio with an exact background colour, compare and close-up renders, contact sheets, turntable encoding, web viewer check |
+| `print-ready-export` | Watertight-enough STL from game meshes (what fails and what works), raised lettering from the livery mask, an STL hole checker |
+
+Start with: *"make a 3D model of …"* or *"make this model printable"*.
+
 ## Thesis kit (UNTELS · LaTeX · APA 7)
 
 Skills to write a bachelor's thesis plan (*plan de tesis*) and thesis for Systems
