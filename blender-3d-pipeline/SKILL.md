@@ -73,9 +73,11 @@ General Sketchfab API use, licence filtering, red flags and credits are in
   (`ford-transit-with-light-bar.zip`) and extracted it to `references/transit/`. Git-ignore the zip and
   the source folder for **size**. CC BY allows redistribution with credit.
 - **Free Standard is not redistributable.** Don't commit it to a public repo, including its textures. In
-  the source project, `references/crafter/textures/` (27 files, about 4.7 MB) from the Free Standard
-  "Volkswagen Crafter" **is committed to the public repo**, although its `.blend` and zip are ignored.
-  Check `git ls-files` on every third-party folder, not just the `.gitignore`.
+  the source project, `references/crafter/textures/` (26 tracked files, about 4.7 MB) from the Free
+  Standard "Volkswagen Crafter" **was committed to the public repo**, although its `.blend` and zip were
+  ignored. It was untracked in clerk-van `a396446`, but **the files remain in git history**, and only a
+  history rewrite removes them. Check `git ls-files` on every third-party folder, not just the
+  `.gitignore`, before the first push.
 - **Blueprints:** there was no free blueprint for a 2015+ Transit. getoutlines.com sells vectors (about $24),
   and the-blueprints.com has older models. Ask the user for real photos and a physical reference instead
   (they supplied a die-cast toy photo, `references/target-diecast.png`).
