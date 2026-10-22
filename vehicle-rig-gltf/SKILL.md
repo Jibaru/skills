@@ -49,9 +49,9 @@ def parent(child, par, keep=True):            # build_transit_van.py:34-37 (rig_
 - **`keep=True` stores the parent's inverse**, so the child keeps its world placement. (The source notes
   described this as "parent inverse = identity". The code stores `par.matrix_world.inverted()`.) For a child
   that should sit *at* the pivot, set `child.location = (0, 0, 0)` and `child.parent = par` instead. The
-  front wheels hang from `Steer_L/R` that way (`build_transit_van.py:593`).
+  front wheels hang from `Steer_L/R` that way (`build_transit_van.py:573`).
 - **Door members are chosen by bbox predicates**, not by name: anything whose centre sits on the door's flank,
-  in its y range, and is thinner than a door joins the pivot (`build_transit_van.py:565-568`):
+  in its y range, and is thinner than a door joins the pivot (`build_transit_van.py:545-548`):
 
   ```python
   fl = members(lambda c, w, l, h: c.x > 0.75 and FD[0] < c.y < FD[1] and 0.3 < c.z < 2.1 and w < 0.8)
@@ -66,7 +66,7 @@ def parent(child, par, keep=True):            # build_transit_van.py:34-37 (rig_
 ## 2. One NLA track per clip
 
 `rig_lib.add_clip(obj, clip, path, keys, index, linear)` keys the property, pushes the action to an NLA
-track **named after the clip**, then leaves the object at its rest value (`build_transit_van.py:619-640`).
+track **named after the clip**, then leaves the object at its rest value (`build_transit_van.py:599-620`).
 Several objects contributing to the same track name become **one** glTF animation, which is how
 `AllDoors_Open` moves five pivots. The Transit's clips: front doors ±65°, rear doors ±95° on `rotation_euler[2]`
 over frames 1→30; the slide door (−0.10 x at frame 8, then +1.15 y at frame 30); wheels 0→360° on
@@ -77,7 +77,7 @@ over frames 1→30; the slide door (−0.10 x at frame 8, then +1.15 y at frame 
 ```python
 bpy.ops.export_scene.gltf(filepath=glb, export_format="GLB", export_yup=True, export_apply=True,
     export_animations=True, export_animation_mode="NLA_TRACKS", export_lights=True, use_selection=False, …)
-for ob in bpy.data.objects:                   # AFTER export (build_transit_van.py:655-663)
+for ob in bpy.data.objects:                   # AFTER export (build_transit_van.py:635-643)
     if ob.animation_data:
         for tr in ob.animation_data.nla_tracks:
             tr.mute = True
@@ -100,7 +100,7 @@ extrap=['NOTHING', 'NOTHING']`.
 - **Lens materials** export with emission colour set and strength **0**, so the lamps are off by default.
   To switch on, the engine raises it (`mats.Headlight_Lens.emissiveIntensity = 3.0` in `web/app.js`).
   When reusing an asset, **rename** its lamp materials to the contract names (`retag("Lights",
-  "Headlight_Lens", …)`, `build_transit_van.py:368-403`), so engines find them by material name.
+  "Headlight_Lens", …)`, `build_transit_van.py:348-383`), so engines find them by material name.
 
 ## 5. Prove what the GLB contains
 

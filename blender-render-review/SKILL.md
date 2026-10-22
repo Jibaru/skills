@@ -51,7 +51,7 @@ runs on, writes only images, and **never saves the .blend**. Each part exists fo
   judging relief or panel lines, so the raised edges catch light toward you.
 - **Rest pose**: every action is cleared and every NLA track muted before rendering (`:26-31`). Otherwise a clip whose strip
   has the default HOLD extrapolation leaves the doors open in the turntable. The rig build also sets strip
-  extrapolation to `"NOTHING"` (`build_transit_van.py:661-663`).
+  extrapolation to `"NOTHING"` (`build_transit_van.py:641-643`).
 - **Camera helper**: point any camera with a single quaternion.
   ```python
   def aim(loc, target):
