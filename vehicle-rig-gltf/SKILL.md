@@ -116,17 +116,20 @@ It exits 1 if any expected node is missing, so put it in CI next to the build.
 
 ## Bugs this check found in the source project
 
-Both are fixes for the project, not for this skill. They show why the contract should be checked
-against the **exported file**, not the build script:
+Checking the contract against the **exported file**, not the build script, found two real bugs in
+clerk-van. Both were fixed in commit `a396446`:
 
-- **Slide distance disagrees.** The clip moves `Door_Slide` by **(−0.10, 0, −1.15)** in glTF space (read from
-  the animation's output accessor). The engines' hand-driven slide uses **−1.05** (`web/app.js:19`,
-  `godot/main.gd:12`), so the button-driven door stops 10 cm short of where the clip puts it. Derive engine
-  constants from the GLB, or export them as node extras, instead of typing them twice.
-- **Godot lens emission never switches on for this build.** `godot/main.gd:43-44` collects lens materials
-  from **meshes** named `Headlight_L`/`Taillight_L`, which the procedural build had. The Transit build only
-  renames **materials** (`Headlight_Lens`), and `glb_rig_report` shows no such meshes:
-  `MISSING: Headlight_L, Taillight_L`. Look lenses up by material name, as `web/app.js` does.
+- **The slide distance disagreed.** The clip moves `Door_Slide` by **(−0.10, 0, −1.15)** in glTF space (read
+  from the animation's output accessor). The engines' hand-driven slide used **−1.05**, so the
+  button-driven door stopped 10 cm short of where the clip put it. Both engines now use −1.15
+  (`web/app.js:19`, `godot/main.gd:12`). The lesson is to derive engine constants from the GLB, or export
+  them as node extras, instead of typing them twice.
+- **Godot lens emission never switched on for this build.** `godot/main.gd` collected lens materials from
+  **meshes** named `Headlight_L`/`Taillight_L`, which only the procedural build had. The Transit build only
+  renames **materials** (`Headlight_Lens`), and `glb_rig_report` showed `MISSING: Headlight_L,
+  Taillight_L`. `_collect_materials` (`godot/main.gd:68`) now matches the material's `resource_name`
+  across every `MeshInstance3D` surface, keeping the old mesh names as a fallback. Look lenses up by
+  material name, as `web/app.js` does.
 
 ## Engine notes (from the source viewers)
 
